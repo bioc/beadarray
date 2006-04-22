@@ -44,8 +44,8 @@ readBeadSummaryData(targets=NULL, header=T, sep=",",path=NULL,
 
   The names specified in the columns parameter are used to read
   the file. It is assumed that the average bead intensities for each
-  array appear in columns with headings of the form "AVG_Signal-ARRAY1,
-  AVG_Signal-ARRAY2....AVG_Signal-ARRAYN" for the N arrays found in the
+  array appear in columns with headings of the form \begin{verbatim}AVG_Signal_ARRAY1,
+  AVG_Signal_ARRAY2....AVG_Signal_ARRAYN\end{verbatim} for the N arrays found in the
   file. All other columns headings are found in the same way.
 
   A separate BeadSummaryList object (described below) is created for

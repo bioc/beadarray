@@ -34,7 +34,7 @@ BLData object with list components R and ProbeID
 \examples{
 #files=dir()
 #BLData = readNonXYData(files,max_length=49777)
-
+}
 \author{Mark Dunning}
 
 \keyword{IO}
