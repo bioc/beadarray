@@ -37,6 +37,9 @@ The method used by Illumina is to use un-logged intensities with a value 'n' = 3
 
 Any beads which have intensity NA are also counted as outliers
 
+The function returns only the outliers for a bead type unless the
+outputValid parameter is specified.
+
 }
 
 \value{

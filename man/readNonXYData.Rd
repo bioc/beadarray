@@ -19,12 +19,12 @@ readNonXYData(files, max_length)
 
 }
 \details{
-The function creates an BeadLevelList containing foreground, background intensities for each bead on each array
+The function creates an BeadLevelList containing foreground and ProbeID for each bead on each array
 
 
 }
 \value{
-BLData object with list components R, Rb, G, Gb
+BLData object with list components R and ProbeID
 }
 
 \author{Mark Dunning}
