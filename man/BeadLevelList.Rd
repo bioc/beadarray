@@ -13,10 +13,11 @@ A simple list-based class for storing red and green channel foreground and backg
 \code{BeadLevelList} objects can be created by \code{new("BeadLevelList",BLData)} where \code{BLData} is a list.
 Objects of this class contains no slots (other than \code{.Data}), but objects should contain the following list components:
 \tabular{ll}{
-  \code{R}:\tab numeric matrix containing the red (cy5) foreground intensities.  Rows correspond to spots and columns to arrays.\cr
-  \code{G}:\tab numeric matrix containing the green (cy3) foreground intensities\cr
-  \code{Rb}:\tab numeric matrix containing the red (cy5) background intensities\cr
-  \code{Gb}:\tab numeric matrix containing the green (cy3) background intensities
+  \code{R}:\tab numeric matrix containing the foreground intensities.  Rows correspond to beads and columns to arrays.\cr
+  \code{Rb}:\tab numeric matrix containing the local background intensities\cr
+  \code{ProbeID}:\tab matrix containing the bead type (probe type) for each bead\cr
+  \code{x}:\tab numeric matrix containing the x coordinate for the centre of each bead\cr
+  \code{y}:\tab numeric matrix containing the y coordinate for the centre of each bead
 }
 
 
@@ -32,7 +33,7 @@ In addition, \code{BeadLevelList} objects can be \link[limma:subsetting]{subsett
 
 }
 
-\author{Gordon Smyth}
+\author{Mark Dunning}
 
 \keyword{classes}
 \keyword{data}

@@ -44,7 +44,7 @@ outputValid parameter is specified.
 
 \value{
   
-  List of beadIDs (1-49777) dividing the beads of this bead type into two categories.
+  List of of row indices relating to the BeadLevelList dividing the beads of this bead type into two categories.
 
   \item{valid}{valid beads}
   \item{outliers}{beads which are calculated as outliers}

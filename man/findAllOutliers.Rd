@@ -24,10 +24,10 @@ We find the outliers for each bead type on the array in turn using the \code{\li
 }
 
 \value{
- numeric vector giving the beadIDs (in the range 1 to total number of beads on the array) of all the beads that are outliers for their bead type.
+ numeric vector giving a row index from the BeadLevelList for all the beads that are outliers for their bead type.
 }
 
-\author{Mark Dunning}
+\author{Mark Dunning and Mike Smith}
 
 \seealso{\code{\link{findBeadStatus}}}
 

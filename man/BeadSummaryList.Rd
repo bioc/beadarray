@@ -5,7 +5,7 @@
 
 \description{
 A list based class for storing bead summary data.  \code{BeadSummaryList} objects can be created from \code{BeadLevelList} objects or by reading 
-directly from pre-processed by using the \code{\link{readBeadSummaryData}} function.
+directly from pre-processed BeadStudio output by using the \code{\link{readBeadSummaryData}} function.
 
 }
 
@@ -14,17 +14,13 @@ Objects should contain the following list components:
 \tabular{ll}{
 \code{R}: \tab Numeric matrix containing foreground intensites for the
 red channel.  Rows correspond to beadtypes and columns to arrays.\cr
-\code{G}: \tab Numeric matrix containing foreground intensites for the
-green channel.\cr
 \code{Rb}: \tab Numeric matrix containing background intensites for the
 red channel. \cr
-\code{Gb}: \tab Numeric matrix containing background intensites for the
-green channel. \cr
-\code{beadstdev}: \tab Standard deviations for each bead type per array.\cr
-\code{nobeads}: \tab Number of beads of each type per array.\cr
+\code{BeadStDev}: \tab Standard deviations for each bead type per array.\cr
+\code{NoBeads}: \tab Number of beads of each type per array.\cr
 \code{ProbeID}: \tab ID for each probe on the arrays.\cr
 \code{nooutliers}: \tab The number of beads flagged as outliers for each
-bead type per array.
+bead type per array. This is only used for bead summary data created by beadarray and not for pre-processed data read from BeadStudio
 }
 }
 
@@ -41,7 +37,7 @@ Other functions which operate on \code{BeadSummaryList} objects include:
 \code{\link{pairwiseMA}}
 }
 
-\author{Mark Dunning}
+\author{Mark Dunning and Mike Smith}
 
 \keyword{classes}
 \keyword{data}

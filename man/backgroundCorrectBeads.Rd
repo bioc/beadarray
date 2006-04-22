@@ -46,7 +46,7 @@ An 'BeadLevelList' object in which components 'R' and 'G' are background
 }
 
 
-\author{Mark Dunning}
+\author{Mark Dunning using limma function}
 
 \examples{
 
