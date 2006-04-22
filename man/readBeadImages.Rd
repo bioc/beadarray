@@ -42,7 +42,7 @@ informed that this has been done.
 
 The function creates an BeadLevelList containing foreground, background intensities for each bead on each array
 
-**Function requires the 'pixmap' library to be loaded**
+Function requires the 'pixmap' library to be loaded
 
 }
 \value{
