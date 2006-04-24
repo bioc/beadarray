@@ -22,7 +22,7 @@ createBeadSummaryData(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:leng
 'arrays' specifies which arrays in the BeadLevelList object we want to average. The default is to average all arrays in the BeadLevelList object but we might only want to average the 
 half of the arrays to save time. Objects which are created seperately by 'createBeadSummaryData' may be joined by using the \code{\link{cbind}} function. 
 
-To summarise each bead type we first have to remove
+To average each bead type we first have to remove
 the outliers for the bead type on the array. The default method is the method used by Illumina which uses the raw (un-logged) intensities and categorises outliers as being those beads 
 which have intensity more than 3 median absolute deviations from the bead mean intensity. By setting the log parameter we can use the log2 intensities instead
 of un-logged and by setting the 'n' parameter we choose beads with intensity 'n' mads from the mean.
@@ -39,7 +39,7 @@ As the function runs it prints out the index of the array that is currently bein
   An BeadSummaryList (bead summary) object in which all components (R, Rb, G, ....) are matrices with number of rows equal to the number of bead types for the experiment and number of columns equal to the length of the 'arrays' object.
 }
 
-\author{Mark Dunning}
+\author{Mark Dunning and Mike Smith}
 
 
 

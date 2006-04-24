@@ -26,10 +26,7 @@ Quantile normalization was proposed by Bolstad et al (2003) for
 }
 
 \value{
-Produces an BeadLevelList or BeadSummaryList (depending on input type) containing normalised intensity values. Values will be on the 
-log2 scale
-
-}
+Produces an BeadLevelList or BeadSummaryList (depending on input type) containing normalised intensity values.}
 \author{Mark Dunning}
 
 \seealso{

@@ -1,7 +1,7 @@
 \name{plotOnSAM}
 \alias{plotOnSAM}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Show variation between all 96 arrays}
+\title{Show variation between all 96 arrays on a SAM}
 \description{
 Function to show how quantities vary across all 96 arrays. eg Mean intensity of a certain control probe
 }
@@ -25,6 +25,9 @@ na.rm = TRUE), min = 0, main = NULL, label = TRUE, missing_arrays = NULL, colour
 Two plots are produced side-by-side. The first is a plot of the set of values against the index 1-96 and secondly we plot 8 x 12 hexagonal arrays with array 
 number 1 being the hexagon in the top-left corner and array 96 in the bottom-right. The colour of hexagon is directly related to the value in v for the particular 
 array number. An array which has a higher value in v will be coloured brighter.
+
+The values in v could be the values of a particular control probe across all arrays which can be obtained by the getMeanIntensities function. 
+The findAllOutliers function could also be used repeatedly for all arrays and then plotted using this function.
 }
 \value{
 Plot is produced on current graphical device.

@@ -23,7 +23,7 @@ readBeadSummaryTargets(file = "beadSummaryTargets.txt", path = NULL,  header=T,s
 }
 \details{
 A targets file defines the files containing bead summary information for a BeadArray experiment. Each file may describe either a single array, or a 96-well SAM.
-The function looks for a file called beadTargets.txt in the current working directory.
+The function looks for a file called beadTargets.txt in the current working directory. It should contain a column heading FileName with each of the files to be read listed below.
 
 }
 \value{

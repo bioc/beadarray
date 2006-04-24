@@ -13,7 +13,7 @@ plotMAXY(BSData, vec, log = TRUE, labels=vec, label=FALSE,ma.ylim = 2, sampleSiz
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BSData}{an averaged BeadSummaryList containing bead summary data}
+  \item{BSData}{a BeadSummaryList containing bead summary data}
   \item{vec}{numeric vector giving the indices of the arrays in BSData we want to plot}
   \item{log}{if TRUE then all values will be log-transformed before plotting}
   \item{labels}{vector specifying names for each array to be plotted}
@@ -41,13 +41,6 @@ In the lower-left section of the plot we see XY plots for all pairwise compariso
 #plotMAXY(BSData, vec)
 
 
-#BSData = readProbeInfo("my gene list.csv", BSData)
-
-# Use 'limma' function to read spot types information
-#types = readSpotTypes("control types.csv",sep=",")
-#BSData$genes$Status = controlStatus(types, BSData$genes)
-
-#plotMAXY(BSData, vec, label=TRUE)
 
 
 }

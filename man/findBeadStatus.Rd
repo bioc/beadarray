@@ -32,8 +32,7 @@ on the set of values.
 The mean and median absolute deviation of all the bead intensities are then calculated. Outliers are beads which have intensity more than 
 'n' median absolute deviations from the mean.
 
-
-The method used by Illumina is to use un-logged intensities with a value 'n' = 3.
+The default setting for the function is the method used by Illumina of un-logged intensities and 'n' = 3.
 
 Any beads which have intensity NA are also counted as outliers
 
