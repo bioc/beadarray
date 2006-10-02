@@ -59,7 +59,7 @@ readQC=function(file, columns=list(Biotin="AVG.Signal.biotin", cy3_high="AVG.Sig
 "plotQC"<-function(object,...){
 
 
-  if(class(object)== "ExpressionSetIllumina") QC = QCInfo(BSData)
+  if(class(object)== "ExpressionSetIllumina") QC = QCInfo(object)
   else QC=object
 
   
@@ -78,8 +78,6 @@ readQC=function(file, columns=list(Biotin="AVG.Signal.biotin", cy3_high="AVG.Sig
 
 
 plotQC.figure1 = function(QC,log=FALSE,...){
-  if(class(BSData)== "ExpressionSetIllumina") QC = QCInfo(BSData)
-  else if(class(BSData) != "AssayData") stop("Input object must of type AssayData or ExpressionSetIllumina")
 
   low = which(colnames(QC$Signal) == "cy3_low")
   med = which(colnames(QC$Signal) == "cy3_med")
@@ -91,9 +89,6 @@ plotQC.figure1 = function(QC,log=FALSE,...){
 
 plotQC.figure2 = function(QC,log=FALSE,...){
 
-  if(class(BSData)== "ExpressionSetIllumina") QC = QCInfo(BSData)
-  else if(class(BSData) != "AssayData") stop("Input object must of type AssayData or ExpressionSetIllumina")
-   
   
   bac = which(colnames(QC$Signal) == "negative")
 
@@ -104,8 +99,6 @@ plotQC.figure2 = function(QC,log=FALSE,...){
 
 plotQC.figure3 = function(QC, log=FALSE,...){
 
-  if(class(BSData)== "ExpressionSetIllumina") QC = QCInfo(BSData)
-  else if(class(BSData) != "AssayData") stop("Input object must of type AssayData or ExpressionSetIllumina")
    
 
   biotin = which(colnames(QC$Signal) == "Biotin")
@@ -118,8 +111,6 @@ plotQC.figure3 = function(QC, log=FALSE,...){
 
 plotQC.figure4 = function(QC, log=FALSE,...){
 
-  if(class(BSData)== "ExpressionSetIllumina") QC = QCInfo(BSData)
-  else if(class(BSData) != "AssayData") stop("Input object must of type AssayData or ExpressionSetIllumina")
    
 
   hkp = which(colnames(QC$Signal) == "house")
@@ -130,8 +121,6 @@ plotQC.figure4 = function(QC, log=FALSE,...){
 
 plotQC.figure5 = function(QC, log=FALSE,...){
 
-  if(class(BSData)== "ExpressionSetIllumina") QC = QCInfo(BSData)
-  else if(class(BSData) != "AssayData") stop("Input object must of type AssayData or ExpressionSetIllumina")
    
 
   mm = which(colnames(QC$Signal) == "mm")
@@ -143,8 +132,6 @@ plotQC.figure5 = function(QC, log=FALSE,...){
 
 plotQC.figure6 = function(QC, log=FALSE,...){
 
-  if(class(BSData)== "ExpressionSetIllumina") QC = QCInfo(BSData)
-  else if(class(BSData) != "AssayData") stop("Input object must of type AssayData or ExpressionSetIllumina")
    
 
   lab = which(colnames(QC$Signal) == "labeling")
@@ -158,8 +145,8 @@ plotQC.figure6 = function(QC, log=FALSE,...){
            
 "singleQCPlot"<-function(object, type="Biotin", log=FALSE, whatToPlot="Signal",...){
 
-  if(class(object)== "ExpressionSetIllumina") QC = QCInfo(BSData)
-  else if(class(BSData) != "AssayData") stop("Input object must of type AssayData or ExpressionSetIllumina")
+  if(class(object)== "ExpressionSetIllumina") QC = QCInfo(object)
+  else if(class(object) != "AssayData") stop("Input object must of type AssayData or ExpressionSetIllumina")
    
 
   if(whatToPlot == "Signal"){
@@ -178,8 +165,10 @@ else if(whatToPlot == "Detection"){
 
 
   if(length(col) == 0){
-
-    stop(paste("type argument must be one of: ", colnames(QC$Signal)))
+    cat("type argument must be one of:\n")
+    cat(colnames(QC$Signal),sep=",")
+    cat("\n")
+    stop()
   }
   if(log){
   plot(log2(data[,col]), xlab="ArrayIndex", ylab="Signal",...)
