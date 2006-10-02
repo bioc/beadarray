@@ -14,7 +14,7 @@ void BLImagePlot(int *nProbes, double *fground, double *yvalues, int *ygrid, dou
 
             if((yvalues[j] >= ygrid[i]) & (yvalues[j] < ygrid[i+1])){
 				if(fground[j] > 0){
-                    total = total + log2(fground[j]);
+                    total = total + (log(fground[j])/log(2.00));
 	    			counter = counter + 1;
 				}
 			}

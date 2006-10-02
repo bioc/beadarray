@@ -27,13 +27,6 @@ setMethod("initialize", "BeadLevelList",
 
 
 
-setMethod("show", "BeadLevelList", function(object){
-printHead(object)
-
-})
-
-
-
 
 print.BeadLevelList <- function(x, ...) {
 	cat("An object of class \"",class(x),"\"\n",sep="")

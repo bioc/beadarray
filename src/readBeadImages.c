@@ -473,7 +473,7 @@ void HIPForeground(int **pixels, double *xs, double *ys, int numBeads, int Image
                
           if((x2 < 3) || (x2 > (ImageWidth) - 3) || (y2 < 3) || (y2 > (ImageHeight - 3))){
               foreground[i] = 0;
-              Rprintf("Bead %d is too close to the edge of the image to be evaluated and has been ignored.\n", i);
+              //Rprintf("Bead %d is too close to the edge of the image to be evaluated and has been ignored.\n", i);
           }
           else{
                count = 0;
@@ -510,7 +510,7 @@ void IlluminaForeground(int **pixels, double *xs, double *ys, int numBeads, int 
      for(i = 0; i < numBeads; i++){
            if((x2[i] < 3) || (x2[i] > (ImageWidth) - 3) || (y2[i] < 3) || (y2[i] > (ImageHeight - 3))){
                  foreground[i] = 0;
-                 Rprintf("Bead %d is too close to the edge of the image to be evaluated and has been ignored.\n", i);
+                 //Rprintf("Bead %d is too close to the edge of the image to be evaluated and has been ignored.\n", i);
            }
            else {
                 av[0] = matrixMean(pixels, (x2[i] - 1), (y2[i] - 1));
