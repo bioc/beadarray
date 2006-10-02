@@ -7,7 +7,7 @@ print("Calculating Target distribution...")
 if(imagesPerArray==2){
 
   
-BLData = readBeadImages(targets[1:2,], imageManipulation=imageManipulation)
+BLData = readBeadLevelData(targets[1:2,], imageManipulation=imageManipulation)
 
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
@@ -25,7 +25,7 @@ arraysToRead = c(1,2)
 
 else if (imagesPerArray==1){
 
-BLData = readBeadImages(targets[1,], imageManipulation=imageManipulation)
+BLData = readBeadLevelData(targets[1,], imageManipulation=imageManipulation)
   
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
@@ -44,7 +44,7 @@ for(i in 2:narrays){
 
 if(imagesPerArray==1){
 
-BLData = readBeadImages(targets[i,], imageManipulation=imageManipulation)
+BLData = readBeadLevelData(targets[i,], imageManipulation=imageManipulation)
 
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
@@ -60,7 +60,7 @@ else if(imagesPerArray==2){
 
 arraysToRead = arraysToRead+2  
 
-BLData = readBeadImages(targets[arraysToRead,], imageManipulation=imageManipulation)  
+BLData = readBeadLevelData(targets[arraysToRead,], imageManipulation=imageManipulation)  
   
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
@@ -100,7 +100,7 @@ else{
 }
 
 
-BLData = readBeadImages(targets[arraysToRead,], imageManipulation=imageManipulation)
+BLData = readBeadLevelData(targets[arraysToRead,], imageManipulation=imageManipulation)
 
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
@@ -128,7 +128,7 @@ for(i in 2:(narrays)){
 
   
 
-BLData = readBeadImages(targets[arraysToRead,], imageManipulation=imageManipulation)
+BLData = readBeadLevelData(targets[arraysToRead,], imageManipulation=imageManipulation)
 
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
