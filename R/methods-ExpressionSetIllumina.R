@@ -48,10 +48,10 @@ setMethod("show", "ExpressionSetIllumina", function(object) {
   
   cat("QC Information\n")
   cat(" Available Slots:  ")
-  cat(names(BSData@QC))
-  nms=selectSome(featureNames(BSData@QC))
+  cat(names(object@QC))
+  nms=selectSome(featureNames(object@QC))
   cat("\n  featureNames:", paste(nms, collapse=", "))
-  nms=selectSome(sampleNames(BSData@QC))
+  nms=selectSome(sampleNames(object@QC))
   cat("\n  sampleNames:", paste(nms, collapse=", "))
   cat("\n")
 
