@@ -1,10 +1,10 @@
-setGeneric("backgroundCorrect", function(object, method="subtract", offset=0) standardGeneric("backgroundCorrect"))
+setGeneric("backgroundCorrect", function(object, method="subtract", offset=0, verbose=FALSE) standardGeneric("backgroundCorrect"))
 
-setMethod("backgroundCorrect" ,"BeadLevelList", function(object, method = "subtract", offset = 0)
+setMethod("backgroundCorrect" ,"BeadLevelList", function(object, method = "subtract", offset = 0,verbose=FALSE)
 {
      
     method <- match.arg(method, c("none", "subtract", "half", 
-        "minimum",normexp))
+        "minimum","normexp"))
     
     switch(method, subtract = {
         object@G <- object@G - object@Gb
@@ -28,7 +28,7 @@ for (slide in 1:ncol(object@G)) {
 	for (j in 1:ncol(object@G)) {
 		x <- object@G[,j]-object@Gb[,j]
 		out <- normexp.fit(x)
-#		if(verbose) cat("G: bg.bias=",out$par[1]," bg.sd=",exp(out$par[2])," fg.mean=",exp(out$par[3]),"\n",sep="")
+		if(verbose) cat("G: bg.bias=",out$par[1]," bg.sd=",exp(out$par[2])," fg.mean=",exp(out$par[3]),"\n",sep="")
 		object@G[,j] <- normexp.signal(out$par,x)
 
 	}}       
