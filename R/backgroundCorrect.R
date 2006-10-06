@@ -4,7 +4,7 @@ setMethod("backgroundCorrect" ,"BeadLevelList", function(object, method = "subtr
 {
      
     method <- match.arg(method, c("none", "subtract", "half", 
-        "minimum"))
+        "minimum",normexp))
     
     switch(method, subtract = {
         object@G <- object@G - object@Gb
@@ -25,7 +25,7 @@ for (slide in 1:ncol(object@G)) {
         }
     }
     ,	normexp={
-	for (j in 1:ncol(RG$R)) {
+	for (j in 1:ncol(object@G)) {
 		x <- object@G[,j]-object@Gb[,j]
 		out <- normexp.fit(x)
 #		if(verbose) cat("G: bg.bias=",out$par[1]," bg.sd=",exp(out$par[2])," fg.mean=",exp(out$par[3]),"\n",sep="")
