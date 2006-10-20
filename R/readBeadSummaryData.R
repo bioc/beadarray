@@ -166,8 +166,8 @@ if(length(which(match(strtrim(colnames(r), nchar(columns$ProbeID)), columns$Prob
     }
 
 
-names(a$exprs) <- gsub("AVG_Signal.(\.+)","\\1",names(a$exprs))
-rownames(a$exprs) = as.character(r[,1])
+names(a$exprs) = names(a$BeadStDev) = names(a$NoBeads)=names(a$Detection) <- gsub("AVG_Signal.(\.+)","\\1",names(a$exprs))
+rownames(a$exprs) = rownames(a$BeadStDev) = rownames(a$NoBeads) = rownames(a$Detection) = as.character(r[,1])
 
 BSData = new("ExpressionSetIllumina")
 assayData(BSData) = a
