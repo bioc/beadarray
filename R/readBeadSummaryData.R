@@ -167,6 +167,7 @@ if(length(which(match(strtrim(colnames(r), nchar(columns$ProbeID)), columns$Prob
 
 
 names(a$exprs) <- gsub("AVG_Signal.(\.+)","\\1",names(a$exprs))
+rownames(a$exprs) = as.character(r[,1])
 
 BSData = new("ExpressionSetIllumina")
 assayData(BSData) = a
