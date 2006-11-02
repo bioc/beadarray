@@ -16,6 +16,8 @@ setClass("BeadLevelList",
 	Gb="matrix",
 	GrnY ="matrix",
 	GrnX="matrix",
+	RedX="matrixOrNull",
+	RedY="matrixOrNull",
 	ProbeID="matrix",
 	targets ="data.frame"
 )
