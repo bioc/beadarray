@@ -51,7 +51,7 @@ readQC=function(file, columns=list(Biotin="AVG.Signal.biotin", cy3_high="AVG.Sig
 
   colnames(detection) = as.character(names(columns))
 
-  QC = assayDataNew(Signal = signal, StDev=var, Detection=detection, storageMode="list")
+  QC = assayDataNew(Signal = signal, StDev=var, Detection=detection, storage.mode="list")
 
   QC
 }
