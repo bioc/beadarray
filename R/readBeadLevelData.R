@@ -10,7 +10,6 @@
      stop("The imageManipulation arguement must be one of: \"none\", \"sharpen\" or \"sasik\"")
    }
    
-   #Take this line out later and make it optional
    foregroundCalc = "Illumina"
 
    if(foregroundCalc == "Illumina"){
@@ -22,59 +21,44 @@
      
 	
    tifFiles = as.character(targets$Image1)
-   csv_files = as.character(targets$xyInfo) 			
+   csv_files = as.character(targets$xyInfo)
+
+     if(!is.null(targets$Image1))
+    tifFiles2 = as.character(targets$Image2)
   	
-   if(is.null(path)) path=getwd()	
 
-#    tifs = dir(path=path, pattern =".tif")
-#    csvs = dir(path=path, pattern =".csv")
+  csvNcol = ncol(read.table(csv_files[1], sep = sep, header = T, 
+    nrows = 1))
 
-   #Check that the specified xyFiles and images exist
-   files = dir(path = path)
-   for(i in 1:length(csv_files)){
-     if(!(csv_files[i] %in% files)){
-       stop(paste("File not found ", csv_files[i]))
-     }
-     if(! (tifFiles[i] %in% files)){
-        stop(paste("File not found ", tifFiles[i]))
-      }
-   }
+  if (is.null(numrow)) {
+    if (csvNcol == 4)
+      WHAT = list(integer(0), NULL, NULL, NULL)
 
-   ##Check if there is a second image specified check they exist
-   if(!is.null(targets$Image2)){
-     tifFiles2 = as.character(targets$Image2)
-     for(i in 1:length(csv_files)){
-       if(!(tifFiles2[i] %in% files)){
-         stop(paste("File not found ", tifFiles2[i]))
-       }
-     }
-   }
-   
-   #needs to be changed for two color data
-#    for(i in 1:length(csv_files)){
-#      if(! (csv_files[i] %in% csvs)){
-#        stop(paste("File not found ", csv_files[i]))
-#      }
-#      if(! (tifFiles[i] %in% tifs)){
-#        stop(paste("File not found ", tifFiles[i]))
-#      }  
-#    }
+    else if(csvNcol == 7)
+      WHAT = list(integer(0),NULL, NULL, NULL, NULL, NULL, NULL)
+    
+    else {
+      stop("Unknown format for xyFile")
+    }
+    
+    ffun <- function(x)
+      length(scan(x, what = WHAT, sep = sep, skip = 1, quiet = TRUE)[[1]])
+    
+    r = sapply(as.list(csv_files),ffun)
+        
+    numrow = max(r)
+  }
+  else
+    {
+      if(length(numrow) != csvNcol)
+        stop(paste("numrow must be a numeric vector of length ",csvNcol,", on value for each sample."))
+
+      r = numrow
+    }
+  
  
-    k = nrow(targets)
 
-   if(is.null(numrow)){
-     csvNcol = ncol(read.table(csv_files[1], sep=sep, header=T, nrows = 1))
-     if(csvNcol == 4){ #One colour data
-       r = scan(csv_files[[1]], what = list(integer(0), NULL, NULL, NULL), sep = sep, skip = 1, quiet = TRUE)
-     }
-     else if(csvNcol == 7){ #Two colour data
-       r = scan(csv_files[[1]], what = list(integer(0), NULL, NULL, NULL, NULL, NULL, NULL), sep = sep, skip = 1, quiet = TRUE)
-     }
-     else { #Stop if there is a weird number of columns i.e. not 4 or 6
-       stop("Unknown format for xyFile")
-     }
-     numrow = length(r[[1]])
-   }
+   
 
    if(csvNcol == 4){
      BLData <- new("BeadLevelList",R=matrix(nrow=0, ncol=0), Rb=matrix(nrow=0, ncol=0),G = matrix(nrow = numrow, ncol=k), Gb = matrix(nrow = numrow, ncol=k),
@@ -86,12 +70,10 @@
                     R = matrix(nrow = numrow, ncol=k), Rb = matrix(nrow = numrow, ncol=k),
                     GrnX = matrix(nrow = numrow, ncol=k), GrnY = matrix(nrow = numrow, ncol=k),
                     RedX = matrix(nrow = numrow, ncol=k), RedY = matrix(nrow = numrow, ncol=k),
-                    ProbeID = matrix(nrow = numrow, ncol=k))
+                    ProbeID = matrix(nrow = numrow, ncol=k,0))
    }
   
-#    if(!is.null(targets$Image2)){
-#      R = Rb = matrix(nrow = numrow, ncol=k)
-#    }
+
 
    for(i in 1:k){
 
@@ -110,19 +92,10 @@
      }
      ord <- order(dat1$ProbeID)
      
-#     BLData$GrnX[,i] <- dat1$GrnX[ord]
-#     BLData$GrnY[,i] <- dat1$GrnY[ord]
-     BLData@ProbeID[,i] <- dat1$ProbeID[ord]
 
-#     if(csvNcol == 7){
-#       BLData$RedX[,i] <- dat1$RedX[ord]
-#       BLData$RedY[,i] <- dat1$RedY[ord]
-#     }
-     
-#     rm(dat1)
-#     gc()
-     
-#     numBeads = length(BLData$GrnX[,i])
+
+    BLData@ProbeID[1:r[i], i] <- dat1$ProbeID[ord]
+
      numBeads = length(dat1$GrnX)
      
      greenIntensities <- .C("readBeadImage", as.character(tifFiles[i]), as.double(dat1$GrnX[ord]),
@@ -130,10 +103,11 @@
                        backGround = double(length = numBeads), as.integer(backgroundSize), as.integer(manip),
                        as.integer(fground), PACKAGE = "beadarray")
 
-     BLData@G[,i] <- greenIntensities[[5]]
-     BLData@Gb[,i] <- greenIntensities[[6]]
-     BLData@GrnX[,i] <- (dat1$GrnX[ord] - min(dat1$GrnX))
-     BLData@GrnY[,i] <- (dat1$GrnY[ord] - min(dat1$GrnY))
+    BLData@G[1:r[i], i] <- greenIntensities[[5]]
+    BLData@Gb[1:r[i], i] <- greenIntensities[[6]]
+    BLData@GrnX[1:r[i], i] <- (dat1$GrnX[ord] - min(dat1$GrnX))
+    BLData@GrnY[1:r[i], i] <- (dat1$GrnY[ord] - min(dat1$GrnY))
+
 
      rm(greenIntensities)
      gc()
@@ -144,11 +118,13 @@
                             backGround = double(length = numBeads), as.integer(backgroundSize), as.integer(manip),
                             as.integer(fground), PACKAGE = "beadarray")
 
-       BLData@R[,i] <- redIntensities[[5]]
-       BLData@Rb[,i] <- redIntensities[[6]]
-       BLData@RedX[,i] <- (dat1$RedX[ord] - min(dat1$RedX))
-       BLData@RedY[,i] <- (dat1$RedY[ord] - min(dat1$RedY))
-       rm(redIntensities)
+       BLData@R[1:r[i], i] <- redIntensities[[5]]
+      BLData@Rb[1:r[i], i] <- redIntensities[[6]]
+      BLData@RedX[1:r[i], i] <- (dat1$RedX[ord] - min(dat1$RedX))
+      BLData@RedY[1:r[i], i] <- (dat1$RedY[ord] - min(dat1$RedY))
+      rm(redIntensities)
+
+
      }
      rm(dat1)
      gc()
