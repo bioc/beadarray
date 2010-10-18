@@ -55,6 +55,16 @@ BASH (\textbf{b}ead\textbf{a}rray \textbf{S}ubversion of \textbf{H}arshlight) me
 spatial artefacts. 
 These documents may be accessed using the following commands:
 
+\section*{Changes since Bioconductor 2.6}
+
+There has been a major overhaul of beadarray since Bioconductor 2.6 with the intention of creating a more flexible package. Users now have more flexibility in the way quality assessment is performed at the bead-level and are allowed to modify the raw bead-level object. Summarisation is also more flexible. See the pacakge vignettes for details and the package news for updates.
+
+<NEWS, eval=FALSE, echo=TRUE>>==
+news(package="beadarray")
+
+@
+
+
 <<Help, eval=FALSE>>=
 library(beadarray)
 beadarrayUsersGuide(topic="beadlevel")

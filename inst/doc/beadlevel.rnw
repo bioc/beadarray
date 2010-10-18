@@ -142,8 +142,7 @@ logRedChannelTransform
 @
 
 
-In this example dataset, the local background-corrected intensities were not read from text files and separate foreground and background intensities were calculated for each bead (option {\tt useImages = TRUE}). The simple background correction that subtracts background from foreground is implemented in the \Rfunction{backgroundCorrectSingleSection} function, and creates a {\tt Grn.bc} column in the {\tt beadData} slot for each section. More elegant solutions, such as using the {\tt normexp} functionality in \Rpackage{limma} would be easy implement as the code below demonstrates.
-
+In this example dataset, the local background-corrected intensities were not read from text files and separate foreground and background intensities were calculated for each bead (option {\tt useImages = TRUE}). The simple background correction that subtracts background from foreground is implemented in the \Rfunction{backgroundCorrectSingleSection} function, and creates a {\tt Grn.bc} column in the {\tt beadData} slot for each section. 
 <<backgroundCorrection, echo=TRUE, eval=TRUE, cache=TRUE>>==
 
 for(i in 1:10){
@@ -281,7 +280,7 @@ With knowledge of which ArrayAddressIDs match control types, we can easily provi
 
 The \Rfunction{makeQCTable} function extends this functionality to produce a table of summaries for all sections in the \Rclass{beadLevelData} object. These data can be stored in the sectionData slot for future reference.
 
-It is also informative to compare the expression level of various control types to the background level of the array. This is done by the \Rfunction{controlProbeDetection} function that returns the percentage of each control type that are significantly expressed above background level. Obivously for positive controls we would expect this percentage to be 100 on a good quality array.
+It is also informative to compare the expression level of various control types to the background level of the array. This is done by the \Rfunction{controlProbeDetection} function that returns the percentage of each control type that are significantly expressed above background level. Obivously for positive controls we would prefer this percentage to be near 100 on a good quality array.
 
 <<qaSummary, echo=TRUE, eval=TRUE>>==
 
@@ -362,7 +361,7 @@ BSData2 <- summarize(BLData, list(greenChannel2))
 
 @ 
 
-<<showBSData, echo=TRUE, eval=TRUE>>==
+<<showBSData, echo=TRUE, eval=TRUE, results=hide>>==
 BSData
 
 head(exprs(BSData)[,1:4])
@@ -381,8 +380,8 @@ The \Robject{BSData} object is very similar to the \Rclass{ExpressionSet} class 
 
 It is possible to have multiple channels, each of which is summarized in a different manner, in the same \Robject{ExpressionSetIllumina} object. This is achieved by passing a list of illuminaChannel objects to \Rfunction{summarize}. This would be especially useful for two-channel data, where the Red and Green channels, and some combination of the two would be of interest in the analysis. In the example code below we summarize both the non background-corrected and background-corrected intensities in the same object. The \Rfunction{channel} function is used to select the data for one of these channels, which returns an of object of type \Rclass{ExpressionSetIllumina}
 
-<<multipleChannel,echo=TRUE,eval=TRUE>>==
 
+<<multipleChannel,echo=TRUE,eval=TRUE, results=hide>>==
 
 greenBackgroundCorrected = new("illuminaChannel", getBackgroundCorrectionIntensities, illuminaOutlierMethod, myMean, mySd, "G.bc")
 
@@ -397,7 +396,7 @@ G.bc = channel(BSData.multChannel, "G.bc")
 
 @
 
-The detection score is a standard measure for Illumina expression experiments, and can be viewed as an empirical estimate of the p-value for the null hypothesis that there is no expression. These can be calculated for summarized data provided that the identity of the negative controls on the array is known. 
+The detection score is a standard measure for Illumina expression experiments, and can be viewed as an empirical estimate of the p-value for the null hypothesis that there is no expression. These can be calculated for summarized data provided that the identity of the negative controls on the array is known. For further analysis of the summarized object, see the separate beadsummary vignette {\tt beadsummary.pdf}.
 
 
 <<calculateDetection, echo=TRUE, eval=TRUE>>==
@@ -410,6 +409,8 @@ negIDs = controlProfile[which(controlProfile[,2] == "negative"),1]
 status[match(negIDs, featureNames(BSData.multChannel))] = "negative"
 
 det = calculateDetection(G, status=status)
+
+head(det)
 
 Detection(G) = det
 

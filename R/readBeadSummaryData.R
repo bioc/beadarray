@@ -117,7 +117,7 @@ if(!(is.null(qcFile))){
     if(sum(notagree)==0) {
        	
 	for(i in 1:length(QC)){
-		slotMatch = match(names(QC)[i], names(assayData(BSData))[i])	
+		slotMatch = match(names(QC)[i], names(assayData(BSData)))	
 		##Only bind the QC column to the existing assayData if it contains data
 		if(!is.na(slotMatch)){
 			if(ncol(QC[[i]]) == ncol(assayData(BSData)[[slotMatch]])){

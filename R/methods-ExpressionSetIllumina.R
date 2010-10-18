@@ -28,13 +28,8 @@ setMethod("initialize", "ExpressionSetIllumina",
 setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
           x<-callNextMethod() # x, i, j, ..., drop=drop)
 
-        if(!is.null(fData(x)) && !missing(i)) fData(x)<-fData(x)[i,, ..., drop = drop]
 	if(!is.null(x@QC) && !missing(j)) x@QC<-x@QC
 	
-          #if (!missing(j)) {
-           #  for(k in 1:length(x@QC))
-            #     x@QC[[k]] <- x@QC[[k]][,j, drop=drop]
-          #}
           x
 })
 

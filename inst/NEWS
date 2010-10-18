@@ -1,0 +1,67 @@
+CHANGES IN VERSION 2.0
+
+NEW FEATURES
+
+    o   new beadLevelData class to represent bead-level data (replaces beadLevelList class)
+
+    o   beadLevelData includes a sectionData slot for managing per-section data
+
+    o 	readIllumina will store file paths of sdf and locs files
+
+    o 	arrayNames is replaced by sectionNames
+
+    o 	getBeadData replaces the functionality of getArrayData
+
+    o 	insertBeadData may be used to modify the per-bead data in the beadLevelData object
+
+    o 	insertSectionData may be used to modify the per-section data in the beadLevelData object
+
+    o 	functions such as logGreenChannelTransform are used to transform the data in the bead-level object, rather than using the what argument
+
+    o 	the 'what' argument in various plotting functions is replaced by a transformation function (e.g. logGreenChannelTransform)
+
+    o 	the backgroundCorrectSingleSection is used instead of backgroundCorrect
+
+    o 	the boxplotBeads function is removed and the generic boxplot is used for beadLevelData
+
+    o 	imageplot and outlier plot functions include a horizontal to change orientation of the plot to match the orientation of the original TIFF image
+
+    o 	the squareSize parameter is now used to control the resolution of imageplots
+
+    o 	the imageplot function will attempt to read sdf information to determine the optimal values of squareSize
+
+    o 	the checkRegistration function checks for possible errors in the registration of the original image. NB requires locs information to be available.
+
+    o 	the BASH function now returns a QC list item containing the number of masked beads and extended score for each array
+
+    o 	BASH function will accept a transformation function argument instead of 'what'
+
+    o 	control probe annotation for Humanv4 arrays is added to ExpressionControlData
+
+    o 	a 'controlProfile' data frame can be used to make control plots of data which are not defined in ExpressionControlData
+
+    o 	the quickSummary and makeQCTable functions are added to summarize various control types on specified arrays
+
+    o 	the controlProbeDetection function returns the percentage of beads belong to defined set of control types that are expressed above background
+
+    o 	the calculateOutlierStats function returns the percentage of outliers that occur in each segment of a particular array 
+
+    o 	the expressionQCPipeline function replaces calculateBeadLevelScores
+
+    o 	the summarize function is used instead of createBeadSummaryData. It requires the specification of an illuminaChannel object which defines the transformation to be applied, outlier function, functions for averaging and a name
+
+    o 	the numeric ArrayAddressIDs used in the bead-level data may be re-mapped to Illumina IDs (ILMN_...) if the annotation slot of the beadLevelData is present. Probes that cannot be mapped may be removed.
+
+    o 	the sampleFac and useSampleFac arguments to summarize are to be used in circumstances when we wish to combine data from multiple sections. i.e. for infinium data when the SNPs interrogated are spread over multiple sections. The sampleFac argument may be left blank when the sdf file is available.
+
+    o 	different summarization schemes are supported in the summarize function, in which case an ExpressionSetIllumina that incorporates the concept of channels will be created. 
+
+    o 	the readBeadSummaryData functions will read extra annotation columns from BeadStudio output
+
+    o 	the NoBeads slot in ExpressionSetIllumina has been re-named to nObservations
+
+    o 	control probes are no longer stored in the QC slot of the ExpressionSetIllumina object, but are in the main exprs matrix along with the gene probes
+
+    o 	support for neqc (limma) and rsn (lumi) in normaliseIllumina
+
+
