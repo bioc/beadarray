@@ -164,6 +164,8 @@ if(!(is.null(qcFile))){
   }
 }
 
+else QC = NULL
+
 if(!(is.null(sampleSheet))){
   colmatch = grep(colnames(exprs(BSData)), samples, fixed=TRUE)
   ord = match(colnames(exprs(BSData)), samples[,colmatch])
@@ -187,7 +189,7 @@ else {
 
 Status = rep("Gene", length(ProbeID))
 
-if(!is.null(QC) > 0){
+if(!is.null(QC)){
 	Type = QC$Type
 	newIDs = rownames(QC[[1]])
 
