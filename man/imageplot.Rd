@@ -7,7 +7,7 @@ Generates an image plot for data from a \code{beadLevelData} object.
 
 
 \usage{
-imageplot(BLData, array = 1, transFun = logGreenChannelTransform, squareSize = NULL, useLocs = TRUE, horizontal = TRUE, low = NULL, high = NULL, ncolors = 100, zlim = NULL, legend = TRUE)
+imageplot(BLData, array = 1, transFun = logGreenChannelTransform, squareSize = NULL, useLocs = TRUE, horizontal = TRUE, low = NULL, high = NULL, ncolors = 100, zlim = NULL, legend = TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -47,6 +47,10 @@ numerical vector of length 2 giving the extreme values of 'z'
 logical, if \code{TRUE}, \code{zlim} and range of data
     is added to plot.
 }
+  \item{\dots}{
+other arguments to plot
+}
+
 }
 \details{
 Produces a standard imageplot for the specified section. The default, transformation \code{\link{logGreenChannelTransform}}, takes the log2 of the green channel. For two channel data, the red channel or log ratio can be plotted by \code{\link{logRedChannelTransform}} or \code{\link{logRatioTransform}} functions can be used. The user can also specify their own functions. 

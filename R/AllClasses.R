@@ -19,10 +19,6 @@ setClass("illuminaChannel",
         
 )
 
-
-setClass("illuminaNChannelSet",representation(channelFac = "vector"), contains="NChannelSet")
-
-
 setClass("ExpressionSetIllumina",
          representation(QC = "AnnotatedDataFrame", channelData="list"),
          contains="eSet"

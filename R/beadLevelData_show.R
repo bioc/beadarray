@@ -12,19 +12,22 @@ setMethod("show", "beadLevelData", function(object) {
 
 	ncols = 4
 	nrows = 5
+
 	for(i in 1:length(object@sectionData)){
 
 		cat(names(object@sectionData)[i], "\n\n")
 
-		if(is.data.frame(object@sectionData[[1]])){
+		if(is.data.frame(object@sectionData[[i]])){
 			if(ncol(object@sectionData[[i]]) < ncols){
-
-				show(object@sectionData[[i]][1:nrows,])
-				cat(paste("\n...", nArrays-nrows, "more rows of data\n\n"))
+				displayrows = min(nrows, nArrays)
+				show(object@sectionData[[i]][1:displayrows,])
+				if(displayrows > nrows) cat(paste("\n...", nArrays-nrows, "more rows of data\n\n"))
 			}
 			else{
-				show(object@sectionData[[i]][1:nrows,1:ncols])
-				cat(paste("\n...", nArrays-nrows, "more rows of data\n\n"))
+				displayrows = min(nrows, nArrays)
+				show(object@sectionData[[i]][1:displayrows,1:ncols])
+
+				if(displayrows > nrows) cat(paste("\n...", nArrays-nrows, "more rows of data\n\n"))
 				cat("\n..", ncol(object@sectionData[[i]]) - ncols, "more columns of data\n\n")
 			}
 		}

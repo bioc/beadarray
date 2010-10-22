@@ -139,7 +139,32 @@ if(removeUnMappedProbes){
 
 
 
-###Make template matrices to hold expression values, errors and number of observations
+##Fiddle to make sure channel names are unique
+
+cNames = unlist(lapply(channelList, function(x) x@name))
+
+if(any(duplicated(cNames))){
+
+	uNames = unique(cNames)
+
+	for(i in 1:length(uNames)){
+
+		sPos = grep(uNames[i], cNames)
+		
+		if(length(sPos) > 1){
+			
+			for(j in 1:length(sPos)){
+			
+				cNames[sPos[j]] = paste(cNames[sPos[j]],j, sep=".")
+				warning("Duplicated channel names were found. Renaming...\n")
+			}				
+
+		}
+
+	}	
+
+
+}
 
 
 for(cNum in 1:length(channelList)){
@@ -149,7 +174,7 @@ for(cNum in 1:length(channelList)){
 	##If more than one channel; append channel name to each column name
 
 	if(length(channelList) == 1) newCols = newNames
-	else newCols = paste(channelList[[cNum]]@name, newNames, sep=":")
+	else newCols = paste(cNames[cNum], newNames, sep=":")
 
 	output[[cNum]][["eMat"]] = template
 
@@ -320,9 +345,14 @@ if(length(output) > 1){
 
 	channelFac = NULL
 
+
 	for(i in 1:length(channelList)){
 
-		channelFac = c(channelFac, rep(channelList[[i]]@name, length(sList)))
+		newfac = cNames[i]
+
+		channelFac = c(channelFac, rep(newfac, length(sList)))
+	
+
 	}
 
 BSData = new("ExpressionSetIllumina")
@@ -413,6 +443,7 @@ BSData@QC = QC
 
 
 BSData@channelData = list(channelFac, channelList)	
+
 
 BSData
 

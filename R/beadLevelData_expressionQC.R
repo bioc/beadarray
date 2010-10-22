@@ -71,15 +71,6 @@ for(i in 1:length(an)){
 	
 	dev.off()
 		
-	jpeg(paste(qcDir, "/poscont/legend.jpeg", sep=""),width=400, height=400)
-	par(mar=c(1,1,1,1))
-	plot(1:6, type="n", axes=FALSE, xlab="",ylab="", ylim=c(0,3))
-
-	text(x=c(2,2), y=c(3,2), labels =c("Housekeeping", "Biotin"), adj=0)
-
-
-	points(x=c(4,4), y=c(3,2), pch = 15, col = c("red", "blue"),cex=2)
-	dev.off()
 	
 
 	##low/medium/high controls
@@ -123,15 +114,6 @@ for(i in 1:length(an)){
 	
 	dev.off()
 
-	jpeg(paste(qcDir, "/hyb/legend.jpeg",sep=""), width=400, height=400)
-	par(mar=c(1,1,1,1))
-	plot(1:6, type="n", axes=FALSE, xlab="",ylab="", ylim=c(0,4))
-
-	text(x=c(2,2,2), y=c(2,3,4), labels =c("Low", "Medium","High"), adj=0)
-
-
-	points(x=c(4,4,4), y=c(2,3,4), pch = 15, col = c("red", "green","blue"),cex=2)
-	dev.off()
 	
 
 	cat("Outliers\n")
@@ -210,125 +192,126 @@ for(i in 1:length(an)){
 
 	dev.off()
 
-	###Make a legend for the control plots
 
 
+        if(require("hwriter")) {
 
-	##If array has been BASHed, could do outliers, imageplot and BASHmasked on same plot?
+            ##Make the HTML page
+            outfile = openPage(filename = paste(qcDir, "/",an[i], ".htm", sep=""))
+            
+            hwrite(paste("Quality assessment for ", an[i]), heading=1,outfile)
+
+            hwrite("Imageplot", heading=2,outfile)
+
+            hwrite("Imageplot created from the log2 transformed green intensiites. White space indicates beads that could not be decoded after array manufacture", outfile)
+
+            hwriteImage(gsub(paste(qcDir, "/", sep=""), "", fname.im),outfile)
+
+            hwrite("Outlier locations", heading=2,outfile)
+
+            hwrite("Locations of beads that are flagged as outliers using Illumina's outlier detection procedure on log2 intensities", outfile)
+
+            hwriteImage(gsub(paste(qcDir, "/", sep=""), "",fname.out),outfile)
+
+            hwrite("Positive Controls", heading=2,outfile)
+
+            hwriteImage(c(gsub(paste(qcDir, "/", sep=""), "",fname.pc), gsub(paste(qcDir, "/", sep=""), "",fname.h)),outfile)
+
+            closePage(outfile)
+        }
 
 
-	##Make the HTML page
-	outfile = openPage(filename = paste(qcDir, "/",an[i], ".htm", sep=""))
-	
-	hwrite(paste("Quality assessment for ", an[i]), heading=1,outfile)
-
-	hwrite("Imageplot", heading=2,outfile)
-
-	hwrite("Imageplot created from the log2 transformed green intensiites. White space indicates beads that could not be decoded after array manufacture", outfile)
-
-	hwriteImage(gsub(paste(qcDir, "/", sep=""), "", fname.im),outfile)
-
-	hwrite("Outlier locations", heading=2,outfile)
-
-	hwrite("Locations of beads that are flagged as outliers using Illumina's outlier detection procedure on log2 intensities", outfile)
-
-	hwriteImage(gsub(paste(qcDir, "/", sep=""), "",fname.out),outfile)
-
-	hwrite("Positive Controls", heading=2,outfile)
-
-	hwriteImage(c(gsub(paste(qcDir, "/", sep=""), "",fname.pc), gsub(paste(qcDir, "/", sep=""), "",fname.h)),outfile)
-	hwriteImage(c("poscont/legend.jpeg","lmh/legend.jpeg"), outfile)	
-
-	closePage(outfile)
-
+        else warning("Could not create HTML page. Make sure that 'hwriter' package is installed\n")
 
 }
 
-
-outfile = openPage(filename = paste(qcDir, "/Summary.htm", sep=""))
-
-
-hwrite("Quality assessment summary", heading=1, outfile)
+        if(require("hwriter")) {
+            outfile = openPage(filename = paste(qcDir, "/Summary.htm", sep=""))
 
 
-##Create boxplot using defined functions
-
-if(plotType == ".jpeg") jpeg(paste(qcDir, "/Boxplot.jpeg",sep=""), width = 1200, height = 300);hwriteImage("Boxplot.jpeg", outfile)
-if(plotType == ".png") png(paste(qcDir, "/Boxplot.jpeg",sep=""), width = 1200, height = 300);hwriteImage("Boxplot.png", outfile)
-if(plotType == ".pdf") pdf(paste(qcDir, "/Boxplot.pdf",sep=""), width = 12, height = 3);
-
-boxplot(BLData, transFun = boxplotFun, outline=FALSE)
-
-dev.off()
+            hwrite("Quality assessment summary", heading=1, outfile)
 
 
+            ##Create boxplot using defined functions
 
-hwrite("Scan Metrics", heading=2,outfile)
+            if(plotType == ".jpeg") {jpeg(paste(qcDir, "/Boxplot.jpeg",sep=""), width = 1200, height = 300);hwriteImage("Boxplot.jpeg", outfile)}
+            if(plotType == ".png") {png(paste(qcDir, "/Boxplot.png",sep=""), width = 1200, height = 300);hwriteImage("Boxplot.png", outfile)}
+            if(plotType == ".pdf") pdf(paste(qcDir, "/Boxplot.pdf",sep=""), width = 12, height = 3);
 
-if("Metrics" %in% colnames(BLData@sectionData)) hwrite(BLData@sectionData$Metrics, outfile)
-
-hwrite("Bead-level control summary", heading=2, outfile)
-
-
-cat("Creating probe metrics\n")
-
-beadLevelQC = makeQCTable(BLData, transFun = transFun, controlProfile = controlProfile)
-
-
-hwrite(beadLevelQC, outfile)
-
-	cat("Calculating outlier Metrics\n")
-
-	outlierTable = matrix(nrow = length(an), ncol = nSegments)
-
-	colnames(outlierTable) = paste("Segment", 1:nSegments)
-	rownames(outlierTable) = an
-
-	for(i in 1:length(an)){
-
-		outlierTable[i,] = calculateOutlierStats(BLData, transFun = transFun, array=i,nSegments=nSegments, outlierFun=outlierFun)
-
-	}
-	
-
-hwrite("Outlier Metrics", outfile,heading=2)
+            boxplot(BLData, transFun = boxplotFun, outline=FALSE)
+                    
+            dev.off()
+                    
 
 
-hwrite(round(outlierTable,2), outfile)
+            hwrite("Scan Metrics", heading=2,outfile)
+
+            if("Metrics" %in% colnames(BLData@sectionData)) hwrite(BLData@sectionData$Metrics, outfile)
+
+            hwrite("Bead-level control summary", heading=2, outfile)
 
 
-	detectionTable = matrix(nrow = length(an), ncol=length(tagsToDetect))
-	colnames(detectionTable) = names(tagsToDetect)
-	rownames(detectionTable) = an
-	for(i in 1:length(an)){
-		detectionTable[i,] = controlProbeDetection(BLData, transFun = transFun, array=i, tagsToDetect = tagsToDetect, negativeTag = negativeTag, controlProfile=controlProfile)
-	}
+            cat("Creating probe metrics\n")
 
-		
-
-hwrite("Detection Metrics", outfile,heading=2)
-
-hwrite(round(detectionTable, 2),outfile)
+            beadLevelQC = makeQCTable(BLData, transFun = transFun, controlProfile = controlProfile)
 
 
+            hwrite(beadLevelQC, outfile)
+
+            cat("Calculating outlier Metrics\n")
+
+            outlierTable = matrix(nrow = length(an), ncol = nSegments)
+
+            colnames(outlierTable) = paste("Segment", 1:nSegments)
+            rownames(outlierTable) = an
+
+            for(i in 1:length(an)){
+
+                    outlierTable[i,] = calculateOutlierStats(BLData, transFun = transFun, array=i,nSegments=nSegments, outlierFun=outlierFun)
+
+            }
+            
+
+                hwrite("Outlier Metrics", outfile,heading=2)
 
 
-closePage(outfile)
+                hwrite(round(outlierTable,2), outfile)
+
+
+                        detectionTable = matrix(nrow = length(an), ncol=length(tagsToDetect))
+                        colnames(detectionTable) = names(tagsToDetect)
+                        rownames(detectionTable) = an
+                        for(i in 1:length(an)){
+                                detectionTable[i,] = controlProbeDetection(BLData, transFun = transFun, array=i, tagsToDetect = tagsToDetect, negativeTag = negativeTag, controlProfile=controlProfile)
+                        }
+
+                                
+
+                hwrite("Detection Metrics", outfile,heading=2)
+
+                hwrite(round(detectionTable, 2),outfile)
 
 
 
 
-##Write to csv
+                closePage(outfile)
 
 
-write.csv(beadLevelQC, file=paste(qcDir,"/probeMetrics.csv",sep=""), quote=FALSE)
 
-write.csv(BLData@sectionData$Metrics, file=paste(qcDir, "/scanMetrics.csv",sep=""), quote=FALSE)	
 
-write.csv(outlierTable, file=paste(qcDir, "/outlierMetrics.csv",sep=""), quote=FALSE)
+                ##Write to csv
 
-write.csv(detectionTable, file=paste(qcDir, "/detectionMetrics.csv",sep=""), quote=FALSE)
-	
+
+                write.csv(beadLevelQC, file=paste(qcDir,"/probeMetrics.csv",sep=""), quote=FALSE)
+
+                write.csv(BLData@sectionData$Metrics, file=paste(qcDir, "/scanMetrics.csv",sep=""), quote=FALSE)	
+
+                write.csv(outlierTable, file=paste(qcDir, "/outlierMetrics.csv",sep=""), quote=FALSE)
+
+                write.csv(detectionTable, file=paste(qcDir, "/detectionMetrics.csv",sep=""), quote=FALSE)
+        }	
+
+        else warning("Could not create HTML page. Make sure that 'hwriter' package is installed\n")
 
 
 }

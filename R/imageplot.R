@@ -1,4 +1,4 @@
-imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, squareSize = NULL, useLocs = TRUE, horizontal = TRUE, low = NULL, high = NULL, ncolors = 100, zlim=NULL, legend=TRUE) {
+imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, squareSize = NULL, useLocs = TRUE, horizontal = TRUE, low = NULL, high = NULL, ncolors = 100, zlim=NULL, legend=TRUE,...) {
     
     data = transFun(BLData, array = array)
     
@@ -134,7 +134,7 @@ imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, sq
         zlim=range(res, na.rm=TRUE)	
 
     ## create the plot
-    image(res, col = col, xaxt = "n", yaxt = "n", zlim=zlim)
+    image(res, col = col, xaxt = "n", yaxt = "n", zlim=zlim,...)
     if(legend)
         mtext(paste("z-range ",round(zr[1],1)," to ",round(zr[2],1)," (saturation ",round(zlim[1],1),", ",round(zlim[2],1),")",sep=""),side=1,cex=0.6)
 }

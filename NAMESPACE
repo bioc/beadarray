@@ -6,7 +6,7 @@ import(graphics)
 importFrom(limma, normalizeQuantiles, neqc)
 
 exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel)
-exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, "se.exprs<-","exprs<-", "nObservations<-", "Detection<-")
+exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, "se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine)
 
 export(insertBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, getAnnotation, setAnnotation, summarize, illuminaOutlierMethod, beadStatusVector, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide)
 

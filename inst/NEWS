@@ -1,3 +1,15 @@
+BUG FIXES
+
+    o   readBeadSummaryData error when qcFile is missing (FIXED)
+
+    o   readIllumina, imageplot, boxplot accept '...' arguments
+
+
+NEw METHODS
+
+    o   combine methods added for beadLevelData and ExpressionSetIllumina
+
+
 CHANGES IN VERSION 2.0
 
 NEW FEATURES

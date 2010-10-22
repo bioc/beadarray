@@ -8,6 +8,7 @@
 \alias{[[,beadLevelData,ANY,missing-method}
 \alias{boxplot,beadLevelData-method}
 \alias{sectionNames,beadLevelData-method}
+\alias{combine,beadLevelData,beadLevelData-method}
 
 \title{Class "beadLevelData" }
 
