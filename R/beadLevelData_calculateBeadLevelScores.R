@@ -185,7 +185,7 @@ poscontPlot = function(BLData, array=1, transFun = logGreenChannelTransform, pos
 	}
 	
 	
-	genericBeadIntensityPlot(posInten, colList = cols)
+	genericBeadIntensityPlot(posInten, colList = cols,...)
 
 
 }
