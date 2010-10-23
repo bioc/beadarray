@@ -8,7 +8,7 @@ setMethod("boxplot",
 
 
   	for(i in 1:narrays){
-      	tmp[[arraynms[i]]] = transFun(BLData, array=i)
+      	tmp[[arraynms[i]]] = transFun(x, array=i)
 	}
   	boxplot(tmp,...)   
     }
