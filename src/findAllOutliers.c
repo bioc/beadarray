@@ -177,8 +177,11 @@ beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeI
 		i++;
 		k++;
 	}
-	m = median(inten, (*count));
-	ma = mad(inten, (*count));
+
+	 if (*count) {
+          m = median(inten, (*count));
+          ma = mad(inten, (*count));
+        }
 
 	status = (beadStatusStruct *)malloc(sizeof(beadStatusStruct));
 	validInds = (int *)malloc(sizeof(int));
