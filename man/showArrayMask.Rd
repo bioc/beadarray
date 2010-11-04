@@ -43,7 +43,7 @@ data(BLData)
 
 bsh = BASH(BLData, array=1)
 
-BLData = setWeights(BLData, wts=bsh$wts, array=1)
+BLData = setWeights(BLData, wts=bsh$wts[[1]], array=1)
 
 showArrayMask(BLData,1)
 
