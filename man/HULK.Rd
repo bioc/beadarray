@@ -31,13 +31,11 @@ HULK(BLData, array, neighbours = NULL, invasions = 20, useLocs = TRUE, weightNam
   \code{HULKResids}.
 
   The average residuals are then subtracted from each bead and the
-  resulting \code{\link{beadLevelData}} object is returned.  If single channel
-  data is used then the green channel is normalized, if it is two channel data
-  then both channels are normalized.
+  resulting corrected intensities object are returned. These corrected intensities can be saved in the original beadLevelData object using \code{insertBeadData}
 }
 
 \value{
-  An object of class \code{beadLevelData}
+vector of corrected intensities
 }
 
 \author{Mike Smith}
@@ -47,6 +45,8 @@ HULK(BLData, array, neighbours = NULL, invasions = 20, useLocs = TRUE, weightNam
 \examples{
 data(BLData)
 o <- HULK(BLData, 1)
+
+
 }
 \references{
 Lynch AG, Smith ML, Dunning MJ, Cairns JM, Barbosa-Morais NL, Tavare S. 
