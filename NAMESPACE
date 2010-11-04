@@ -24,7 +24,7 @@ export(logGreenChannelTransform, logRedChannelTransform, logRatioTransform, gree
 export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, imageplot, checkRegistration, makeQCTable, expressionQCPipeline, calculateOutlierStats, controlProbeDetection,plotBeadLocations)
 
 ## BASH etc.
-export(BASH, HULK, generateNeighbours, BASHCompact, BASHDiffuse, BASHExtended, setWeights)
+export(BASH, HULK, generateNeighbours, BASHCompact, BASHDiffuse, BASHExtended, setWeights, showArrayMask)
 
 ## Summary Data
 
