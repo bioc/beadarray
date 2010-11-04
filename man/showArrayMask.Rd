@@ -14,9 +14,10 @@ showArrayMask(BLData,array = 0, override = FALSE, wtsName = "wts", transFun = lo
 
 \arguments{
   \item{BLData}{A BeadLevelList object.}
-  \item{SAM}{Logical. If \code{TRUE}, display a hexagonal overlay where appropriate.}
   \item{override}{Logical. Plotting a large mask can cause slowdown problems. By default, if more than 200 000 beads are masked, the current mask will not be plotted. You can force the mask to be plotted by setting this argument to \code{TRUE}, however beware as this may cause slower systems to freeze.}
   \item{wtsName}{name under which the bead weights are stored}
+  \item{array}{numeric index of the array to plot}
+	
   \item{transFun}{function to transform intensities prior to calculating outliers}
   \item{outlierFun}{function to remove outliers}
   \item{horizontal}{if TRUE the resulting image is plotting with the longest edge along the x axis}	
