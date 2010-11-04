@@ -221,6 +221,10 @@ featureData = new("AnnotatedDataFrame", data=data.frame(ProbeID,annoMat, row.nam
 phenoData(BSData) = p
 featureData(BSData) = featureData
 
+###We've read single-channel data, so set the channelData slot appropriately
+
+BSData@channelData[[1]] = rep("G", length(sampleNames(BSData)))
+
 BSData
 
 }

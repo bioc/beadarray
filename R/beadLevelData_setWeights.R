@@ -7,19 +7,27 @@ setWeights = function(BLData, wts, array, combine = FALSE, wtName = "wts"){
 		{
 			#check for existing weights
 			if(!wtName %in% colnames(BLData[[array]]))
+
 			{
-				BLData = insertBeadData(BLData, array=array, what=wtName, data = wts[[array]])
+				##Try and insert the weights into the beadLevelData
+	
+				BLData = insertBeadData(BLData, array=array, what=wtName, data = wts)
 			}
 			else
 			{
 				wtCol = grep(wtName, colnames(BLData[[array]]))
 
-				BLData = insertBeadData(BLData, array=array, what=wtName,data = pmin(wts[[array]],BLData[[array]][,wtCol]))
+				##Try and insert the weights into the beadLevelData
+
+				if(length(wtCol) > 0) combinedWts = pmin(wts,BLData[[array]][,wtCol])
+				else combinedWts = wts
+
+				BLData = insertBeadData(BLData, array=array, what=wtName,data = combinedWts)
 			}
 		}
 		else
 		{
-			BLData = insertBeadData(BLData, array=array, what=wtName, data = wts[[array]])
+			BLData = insertBeadData(BLData, array=array, what=wtName, data = wts)
 		}
 	}
 	else
@@ -35,7 +43,10 @@ setWeights = function(BLData, wts, array, combine = FALSE, wtName = "wts"){
 				else{
 					wtCol = grep(wtName, colnames(BLData[[array]]))
 
-					BLData = insertBeadData(BLData, array=i, what=wtName, data = pmin(wts[[i]],BLData[[i]][,wtCol]))
+					if(length(wtCol) > 0) combinedWts = pmin(wts,BLData[[array]][,wtCol])
+					else combinedWts = wts
+
+					BLData = insertBeadData(BLData, array=i, what=wtName, data = combinedWts)
 				}
 			}		
 		}
