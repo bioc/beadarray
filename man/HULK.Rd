@@ -6,7 +6,7 @@ Normalizes an probe intensities by calculating a weighted average
 residual based on the residuals of the surrounding probes.
 }
 \usage{
-HULK(BLData, array, neighbours = NULL, invasions = 20, useLocs = TRUE, weightName = "wts")
+HULK(BLData, array = 1, neighbours = NULL, invasions = 20, useLocs = TRUE, weightName = "wts", transFun = logGreenChannelTransform)
 }
 
 \arguments{
@@ -17,6 +17,7 @@ HULK(BLData, array, neighbours = NULL, invasions = 20, useLocs = TRUE, weightNam
     neighbouring beads.}
   \item{useLocs}{If information from an associated locs is to be used}
   \item{weightName}{Column name where bead weights are to be taken from}
+  \item{transFun}{Transformation function}
 }
 
 \details{
@@ -35,7 +36,7 @@ HULK(BLData, array, neighbours = NULL, invasions = 20, useLocs = TRUE, weightNam
 }
 
 \value{
-vector of corrected intensities
+List where each entry is either a vector of corrected intensities or NULL, depending upon which arrays were specified.
 }
 
 \author{Mike Smith}

@@ -1,6 +1,6 @@
-HULK <- function(BLData, array, neighbours = NULL, invasions = 20, useLocs = TRUE, weightName ="wts") {
+HULK <- function(BLData, array = 1, neighbours = NULL, invasions = 20, useLocs = TRUE, weightName ="wts", transFun = logGreenChannelTransform) {
 
-    transFun = logGreenChannelTransform
+  
     an <- sectionNames(BLData)
     tmp = BLData[[array]]
     probeIDs = tmp[,"ProbeID"]
@@ -17,7 +17,7 @@ HULK <- function(BLData, array, neighbours = NULL, invasions = 20, useLocs = TRU
             neighbours <- generateNeighbours(BLData, i, useLocs=useLocs)
         }
 
-        out[[i]] = 2^log2.na(data) - HULKResids(BLData, i, transFun, useLocs, neighbours, invasions)
+        out[[i]] = data - HULKResids(BLData, i, transFun, useLocs, neighbours, invasions, weightName = weightName)
     }
     out
 }

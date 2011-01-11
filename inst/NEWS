@@ -1,3 +1,11 @@
+BUG FIXES in 2.0.3
+
+	o	Correct section names are retained when summarizing multiple chips
+
+	o   HULK() returns values on the scale specified by the user
+
+	o   HULK() accepts transformation argument
+
 BUG FIXES in 2.0.2
 
     o   BSData now displays corrected when created from BeadStudio output
