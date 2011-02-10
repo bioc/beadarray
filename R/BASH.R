@@ -350,7 +350,7 @@ BASHCompact <- function(BLData, array, neighbours = NULL, useLocs = TRUE, transF
 	o <- 42
 	while(maxiter > 0 & length(o) > 0)
 	{
-		o <- findAllOutliersIgnore(BLData, array = array, transFun = logGreenChannelTransform, ignore = output, ...)
+		o <- findAllOutliersIgnore(BLData, array = array, transFun = transFun, ignore = output, ...)
 		o <- chooseClusters(o, neighbours, cutoff = cutoff)
 		#o <- closeImage(o, neighbours, invasions = cinvasions)
 		output <- sort(c(output,o))
