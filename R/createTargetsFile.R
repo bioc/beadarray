@@ -233,8 +233,8 @@ function(dir=NULL, nochannels=1, channel1="Grn", channel2="Red", txtsuff="txt", 
     }
 
     ## remove reordering for now
-    ## TODO
-    targets <- targets[order(as.integer(rownames(targets))),]
+    ## this is too simplistic and breaks a lot!
+    #targets <- targets[order(as.integer(rownames(targets))),]
     return(list(targets = as.data.frame(targets)))
 }
 
