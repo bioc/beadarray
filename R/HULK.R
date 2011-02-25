@@ -41,7 +41,14 @@ HULKResids <- function(BLData, array, transFun = logGreenChannelTransform, useLo
     probeIDs = tmp[,"ProbeID"]
 
     data <- transFun(BLData, array)
-    beadTypeMeans = lapply(split(data, probeIDs), mean, na.rm=TRUE)
+
+   ###Remove outliers first	
+
+    outliers = illuminaOutlierMethod(data, probeIDs)
+
+    	
+
+    beadTypeMeans = lapply(split(data[-outliers], probeIDs[-outliers]), mean, na.rm=TRUE)
 
     residuals = data - unlist(beadTypeMeans)[as.character(probeIDs)]
     residuals[which((is.na(residuals)) | (weights == 0))] = 0
@@ -55,5 +62,3 @@ HULKResids <- function(BLData, array, transFun = logGreenChannelTransform, useLo
     output <- .C("HULK", as.double(residuals), as.integer(t(neighbours)), as.integer(nrow(neighbours)), as.integer(invasions), results = as.double(residuals))
     output$results
 }
-
-
