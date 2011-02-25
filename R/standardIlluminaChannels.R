@@ -8,7 +8,7 @@ logGreenChannelTransform = function(BLData, array){
 greenChannelTransform = function(BLData, array){
 
 	x = getBeadData(BLData, array=array,what="Grn")
-
+	return(x)
 }
 
 
@@ -26,7 +26,7 @@ logRedChannelTransform = function(BLData,array){
 redChannelTransform = function(BLData,array){
 
 	x = getBeadData(BLData, array=array,what="Red")
-
+	return(x)
 }
 
 

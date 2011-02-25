@@ -51,8 +51,13 @@ if(useSampleFac){
 			sampleFac = BLData@sectionData$"SampleGroup"[,1]
 
 			sList = unique(sampleFac)
+			dupList = which(duplicated(sampleFac))
 
-			newNames = paste(unique(strtrim(arraynms, 10)), sList, sep="_")		
+			##newNames = paste(unique(strtrim(arraynms, 10)), sList, sep="_")
+			if(any(dupList))
+                            newNames = strtrim(arraynms[-dupList],12)
+                        else
+                            newNames = strtrim(arraynms,12)
 		
 		}
 	}
@@ -69,7 +74,12 @@ if(useSampleFac){
 
 		else{
 			sList = unique(sampleFac)
-			newNames=paste(unique(strtrim(arraynms, 10)), sList, sep="_")	
+			dupList = which(duplicated(sampleFac))
+
+                        if(any(dupList))
+                            newNames = strtrim(arraynms[-dupList],12)
+                        else
+                            newNames = strtrim(arraynms,12)
 		}
 	}
 
@@ -296,6 +306,13 @@ for(cNum in 1:length(channelList)){
 			pIDs2 = pIDs2[-oList]
 			wts2 = wts2[-oList]
 
+			##check if any beads masked completely
+
+			if(any(wts2 ==0)){
+				values2 = values2[-which(wts2 ==0)]
+				pIDs2 = pIDs2[-which(wts2 ==0)]
+				wts2 = wts2[-which(wts2 ==0)]
+			}
 
 			###Create list of values, split by ProbeID. Multiply by probe weights
 
@@ -304,6 +321,8 @@ for(cNum in 1:length(channelList)){
 			###Find out the mapping between the list and probeIDs
 
 			pMap = match(names(tmp), probeIDs)
+
+			
 	
 			cat("Using exprFun\n")
 			output[[ch]][["eMat"]][pMap,s] = unlist(lapply(tmp, exprFun))
