@@ -1,5 +1,7 @@
 
-% %\VignetteIndexEntry{beadarray Vignette} %\VignetteKeywords{beadarray expression Analysis} %\VignettePackage{beadarray} 
+%\VignetteIndexEntry{beadarray Vignette} 
+%\VignetteKeywords{beadarray expression Analysis}
+%\VignettePackage{beadarray} 
 \documentclass{article}
 
 

@@ -69,6 +69,10 @@ imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, sq
                 resList[[j]][(tmp3[[i]][1] %/% squareSize) + 1, (tmp2[[i]][1] %/% tmpXsize) + 1] <- tmp.mean[i];
             }
         }
+
+        for(i in 1:length(resList)) {
+            while(ncol(resList[[i]]) < max(sapply(resList,ncol))) { resList[[i]] = cbind(resList[[i]], NA) }
+        }
         res <- matrix(NA, ncol = ncol(resList[[1]]), nrow = sum(unlist(lapply(resList, nrow))) + length(resList) - 1);
         rowIdx <- 1;
         for(i in 1:length(resList)) {

@@ -1,3 +1,10 @@
+CHANGES IN VERSION 2.0.N
+
+BUG FIXES in 2.0.6
+
+	o	Added patch from developmental release that corrected problems with 
+	imageplot() when a locs file was being used.
+
 BUG FIXES in 2.0.3
 
 	o	Correct section names are retained when summarizing multiple chips
