@@ -527,20 +527,21 @@ BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTrans
             d = numeric(0)
         }
 
-# 	output$wts[[i]] <- as.numeric(!1:nrow(BLData[[i]]) %in% unique(c(c,d)))
+	output <- NULL
+ 	output$wts <- as.numeric(!1:nrow(BLData[[i]]) %in% unique(c(c,d)))
 # 	cat("Weights found. Total no of defective beads:",length(which(!output$wts[[i]])),"\n")
 # 
 # 	
-# 	output$ext <- scores
+ 	if (extended) output$ext <- score
 # 	
 # 	##Store some QC stats	
-# 	if(extended) output$QC = data.frame(BeadsMasked = unlist(lapply(output$wts, function(x) sum(x==0))), ExtendedScore = output$ext)
-# 	else output$QC = data.frame(BeadsMasked = unlist(lapply(output$wts, function(x) sum(x==0))))
+ 	if(extended) output$QC = data.frame(BeadsMasked = sum(output$wts==0), ExtendedScore = output$ext)
+ 	else output$QC = data.frame(BeadsMasked = sum(output$wts==0))
 # 	
-# 	output$call <- match.call()
+#  	output$call <- match.call()
 
         
-        output <- as.numeric(!1:nrow(BLData[[array]]) %in% unique(c(c,d)))
+#        output <- as.numeric(!1:nrow(BLData[[array]]) %in% unique(c(c,d)))
 	output
 }
 

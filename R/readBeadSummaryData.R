@@ -187,7 +187,7 @@ else {
 
 ##Have we added any more IDs to BSData
 
-Status = rep("Gene", length(ProbeID))
+Status = rep("regular", length(ProbeID))
 
 if(!is.null(QC)){
 	Type = QC$Type

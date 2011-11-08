@@ -49,7 +49,7 @@ else{
 	  bsv <- bsv[-excludeInd]
 	  pIDs <- pIDs[-excludeInd]
 	  inten <- inten[-excludeInd]
-
+	  wts <- wts[-excludeInd]
 
   }
 
