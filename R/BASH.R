@@ -528,7 +528,7 @@ BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTrans
         }
 
 	output <- NULL
- 	output$wts <- as.numeric(!1:nrow(BLData[[i]]) %in% unique(c(c,d)))
+ 	output$wts <- as.numeric(!1:nrow(BLData[[array]]) %in% unique(c(c,d)))
 # 	cat("Weights found. Total no of defective beads:",length(which(!output$wts[[i]])),"\n")
 # 
 # 	
