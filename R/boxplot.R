@@ -54,7 +54,7 @@ setMethod("boxplot",
 
 		if(sampleFactor %in% colnames(pData(x))){
 		
-		data <- data.frame(data, sampleFactor = pData(x)[match(data[,"X2"], rownames(pData(x))),sampleFactor])
+		data <- data.frame(data, sampleFactor = pData(x)[match(data[,"Var2"], rownames(pData(x))),sampleFactor])
 		addedSampleFactor <- TRUE
 
 	
@@ -67,7 +67,7 @@ setMethod("boxplot",
 	if(!is.null(probeFactor)){
 		if(probeFactor %in% colnames(fData(x))){
 		
-		data <- data.frame(data, probeFactor = fData(x)[match(data[,"X1"], rownames(fData(x))),probeFactor])
+		data <- data.frame(data, probeFactor = fData(x)[match(data[,"Var1"], rownames(fData(x))),probeFactor])
 		addedProbeFactor <- TRUE
 		}
     
@@ -79,7 +79,7 @@ setMethod("boxplot",
 	
 	if(!(addedSampleFactor) & !(addedProbeFactor)){
 	
-	p <- ggplot(data, aes(x = factor(X2), y = value, fill=factor(X2))) + geom_boxplot(outlier.shape=NA)
+	p <- ggplot(data, aes(x = factor(Var2), y = value, fill=factor(Var2))) + geom_boxplot(outlier.shape=NA)
 
 	}
 
@@ -94,7 +94,7 @@ setMethod("boxplot",
 			p <- p + facet_wrap(~sampleFactor)
 		}
 
-		else p <- p + facet_wrap(~X2)
+		else p <- p + facet_wrap(~Var2)
 
 	}
 	

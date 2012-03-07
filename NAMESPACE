@@ -3,7 +3,7 @@ import(Biobase)
 import(graphics)
 import(AnnotationDbi)
 
-#importFrom(reshape, melt)
+importFrom(reshape2, melt)
 
 #import(ggplot2)
 

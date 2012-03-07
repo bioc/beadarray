@@ -188,7 +188,7 @@ boxplot(exampleSummaryData.log2[ids,], sampleFactor = "SampleFac", probeFactor =
 The \Rfunction{boxplot} function in \Rpackage{beadarray} creates graphics using the \Rpackage{ggplot2} package rather than the {\tt R} base graphics system. Therefore, the standard way of manipulating graphics using {\tt par} and {\tt mfrow} etc will not work with the output of \Rfunction{boxplot}. However, the \Rpackage{ggplot2} package has equivalent functionality and is a more powerful and flexible system. There are numerous tutorials on how to use the \Rpackage{ggplot2} package, which is beyond the scope of this vignette. In the below code, we assign the results of \Rfunction{boxplot} to objects that we combine using viewports (a concept from the {\tt grid} graphics system). The code also demonstrates how aspects of the plot can be altered programatically. 
 
 <<ggplot-layout>>=
-
+require("gridExtra")
 bp1 <- boxplot(exampleSummaryData.log2[ids,], sampleFactor = "SampleFac", probeFactor = "IlluminaID") + opts(title = "ALB expression level comparison") + xlab("Illumina Probe") + ylab("Log2 Intensity")
 
 bp2 <- boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status") + opts(title = "Control Probe Comparison")
