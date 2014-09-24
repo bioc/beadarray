@@ -386,7 +386,7 @@ library(GenomicRanges)
 
 Having converted the DE results into a common format such as \Rclass{GRanges} allows access to common routines, such as those provided by \Biocpkg{ggbio}. For example, it is often useful to know where exactly the illumina probes are located with respect to the gene.
 
-<<>>=
+<<eval=FALSE>>=
 library(ggbio)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 tx <- TxDb.Hsapiens.UCSC.hg19.knownGene
