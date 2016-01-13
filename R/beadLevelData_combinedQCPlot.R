@@ -105,17 +105,17 @@ else{
 
   qs <- quantile(subset(df,Negative)[,3])
 
-  p1 <- ggplot(data=subset(df, Control), aes(x = factor(ID), y = Log2Intensity, fill=factor(ControlType))) + geom_boxplot() + geom_hline(y = qs[4],color="green") + geom_hline(y = qs[3],color="green") + geom_hline(y = qs[2],color="green") + geom_hline(y = qs[1],color="green") + facet_wrap(~ControlType)
+  p1 <- ggplot(data=subset(df, Control), aes(x = factor(ID), y = Log2Intensity, fill=factor(ControlType))) + geom_boxplot() + geom_hline(yintercept = qs[4],color="green") + geom_hline(yintercept = qs[3],color="green") + geom_hline(yintercept = qs[2],color="green") + geom_hline(yintercept = qs[1],color="green") + facet_wrap(~ControlType)
 
   #p1 <- ggplot(df, aes(x = factor(ID[Control]), y = Log2Intensity[Control], fill=factor(ControlType[Control]))) + geom_boxplot(data = subset(df, Control)) + geom_hline(y = qs[4],color="green") + geom_hline(y = qs[3],color="green") + geom_hline(y = qs[2],color="green") + geom_hline(y = qs[1],color="green")
 
   if(any(df$Masked)){
 
-  p1 <- ggplot(data=subset(df, Control), aes(x = factor(ID), y = Log2Intensity, fill=factor(ControlType))) + geom_boxplot() + geom_point(data = subset(df.controls, Masked), color="red") + geom_hline(y = qs[4],color="green") + geom_hline(y = qs[3],color="green") + geom_hline(y = qs[2],color="green") + geom_hline(y = qs[1],color="green") + facet_wrap(~ControlType,scales="free_x")
+  p1 <- ggplot(data=subset(df, Control), aes(x = factor(ID), y = Log2Intensity, fill=factor(ControlType))) + geom_boxplot() + geom_point(data = subset(df.controls, Masked), color="red") + geom_hline(yintercept = qs[4],color="green") + geom_hline(yintercept = qs[3],color="green") + geom_hline(yintercept = qs[2],color="green") + geom_hline(yintercept = qs[1],color="green") + facet_wrap(~ControlType,scales="free_x")
 
   }
 
-  else p1 <- ggplot(data=subset(df, Control), aes(x = factor(ID), y = Log2Intensity, fill=factor(ControlType))) + geom_boxplot() + geom_hline(y = qs[4],color="green") + geom_hline(y = qs[3],color="green") + geom_hline(y = qs[2],color="green") + geom_hline(y = qs[1],color="green") + facet_wrap(~ControlType,scales="free_x")
+  else p1 <- ggplot(data=subset(df, Control), aes(x = factor(ID), y = Log2Intensity, fill=factor(ControlType))) + geom_boxplot() + geom_hline(yintercept = qs[4],color="green") + geom_hline(yintercept = qs[3],color="green") + geom_hline(yintercept = qs[2],color="green") + geom_hline(yintercept = qs[1],color="green") + facet_wrap(~ControlType,scales="free_x")
 
 
   p1
