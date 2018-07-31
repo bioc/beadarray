@@ -5,11 +5,11 @@ The package is able to read bead-level data (raw TIFFs and text files) output by
 
 ## Author: 
 
-Mark Dunning, Mike Smith, Jonathan Cairns, Andy Lynch, Matt Ritchie
+Mark Dunning, Mike L. Smith, Jonathan Cairns, Andy Lynch, Matt Ritchie
 
 ## Maintainer: 
 
-Mark Dunning <Mark.Dunning at cruk.cam.ac.uk> 
+Mark Dunning <m.j.dunning at sheffield.ac.uk> 
 
 ## Citation
 
@@ -18,9 +18,8 @@ Mark Dunning <Mark.Dunning at cruk.cam.ac.uk>
 ## Installation
 
 ``` 
-## try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite("beadarray")
+install.packages("BiocManager")
+BiocManager::install("beadarray")
 ```
 
 ## Documentation

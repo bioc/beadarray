@@ -60,9 +60,8 @@ In order to reduce the download size of \Rpackage{beadarray}, we have moved the 
 
 <<CompanionPkg,eval=FALSE>>=
 
-source("http://www.bioconductor.org/biocLite.R")
-
-biocLite(c("beadarrayExampleData", "beadarrayExampleData"))
+install.packages("BiocManager")
+BiocManager::install("beadarrayExampleData")
 
 @
 

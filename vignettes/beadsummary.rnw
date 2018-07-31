@@ -42,12 +42,11 @@ The BeadArray technology involves randomly arranged arrays of beads, with beads 
 
 This vignette demonstrates the analysis of bead summary data using beadarray. The recommended approach to obtain these data is to start with bead-level data and follow the steps illustrated in the vignette {\tt beadlevel.pdf} distributed with \Biocpkg{beadarray}. If bead-level data are not available, the output of Illumina's BeadStudio or GenomeStudio can be read by \Biocpkg{beadarray}. Example code to do this is provided at the end of this vignette. However, the same object types are produced from either of these routes and the same functionality is available.
 
-To make the most use of the code in this vignette, you will need to install the \Biocexptpkg{beadarrayExampleData} and \Biocannopkg{illuminaHumanv3.db} packages from {\tt Bioconductor}. 
+To make the most use of the code in this vignette, you will need to install the \Biocexptpkg{beadarrayExampleData} and \Biocannopkg{illuminaHumanv3.db} packages from {\tt Bioconductor}. We use the \CRANpkg{BiocManager} package to install these:
 
 <<installExampleData,eval=FALSE>>=
-source("http://www.bioconductor.org/biocLite.R")
-biocLite(c("beadarrayExampleData", "illuminaHumanv3.db"))
-
+install.packages("BiocManager")
+BiocManager::install(c("beadarrayExampleData", "illuminaHumanv3.db"))
 @
 
 The code used to produce these example data is given in the vignette of \Biocexptpkg{beadarrayExampleData}, which follow similar steps to those described in the {\tt beadlevel.pdf} vignette of \Biocpkg{beadarray}. The following commands give a basic description of the data.
