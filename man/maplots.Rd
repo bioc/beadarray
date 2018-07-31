@@ -46,8 +46,11 @@ mas + geom_hline(yintercept=c(-1.5,1.5),col="red")
 mas + scale_fill_gradient2(low="yellow",mid="orange",high="red")
 
 mas <- plotMA(rawdata,do.log=FALSE,SampleGroup="SampleFac")
+
+\dontrun{
 mas[[1]]
 mas[[2]]
+}
 
 }
 
