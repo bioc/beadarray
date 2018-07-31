@@ -5,7 +5,8 @@
 Creates a list of probes marked as being in compact defects.
 }
 \usage{
-BASHCompact(inten, probeIDs, neighbours = NULL, wts=1, n=3, maxiter = 10, cutoff = 8,  cinvasions = 10, outlierFun=illuminaOutlierMethod, ...)
+BASHCompact(inten, probeIDs, neighbours = NULL, wts=1, n=3, maxiter = 10,
+        cutoff = 8,  cinvasions = 10, outlierFun=illuminaOutlierMethod, ...)
 }
 
 \arguments{
@@ -46,9 +47,14 @@ A vector consisting of the BeadIDs of beads labelled as compact defects.
 if(require(beadarrayExampleData)){
 
 data(exampleBLData)
-o <- BASHCompact(getBeadData(exampleBLData,array=1,what="Grn"), getBeadData(exampleBLData,array=1,what="ProbeIDs"))
-o <- BASHCompact(getBeadData(exampleBLData,array=1,what="Grn"), getBeadData(exampleBLData,array=1,what="ProbeIDs"), cinvasions = 10) ##increased no of closure invasions
-o <- BASHCompact(getBeadData(exampleBLData,array=1,what="Grn"), getBeadData(exampleBLData,array=1,what="ProbeIDs"), cutoff = 12) ##only larger defects will be found with this setting
+o <- BASHCompact(getBeadData(exampleBLData,array=1,what="Grn"), 
+                 getBeadData(exampleBLData,array=1,what="ProbeIDs"))
+##increased no of closure invasions
+o <- BASHCompact(getBeadData(exampleBLData,array=1,what="Grn"), 
+                 getBeadData(exampleBLData,array=1,what="ProbeIDs"), cinvasions = 10) 
+##only larger defects will be found with this setting
+o <- BASHCompact(getBeadData(exampleBLData,array=1,what="Grn"), 
+                    getBeadData(exampleBLData,array=1,what="ProbeIDs"), cutoff = 12) 
 
 }
 
