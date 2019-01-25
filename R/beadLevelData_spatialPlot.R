@@ -108,20 +108,6 @@ else{
  
 }
 
-##if(SAM) {
-
-##yy = c(ymax/2, 0, 0, ymax/2, ymax, ymax)
-
-##xx = c(0,xmax/4, 0.75*xmax, xmax, 0.75*xmax, xmax/4)
-
-##polygon(xx, yy)
-
-##}
-
-##else polygon(x=c(0,0,xmax,xmax), y=c(0, ymax, ymax,0))
-
-#require("ggplot2")
-
 p <- qplot(x=xs, y=ys, size=I(0.3),colour=ptsCol)
 
 p+opts(axis.line = theme_blank(), axis.text.x = theme_blank(), 

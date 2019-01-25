@@ -34,6 +34,7 @@ Mark Dunning
 \examples{
 
 if(require(beadarrayExampleData)){
+library(ggplot2)
 data(exampleSummaryData)
 rawdata <- channel(exampleSummaryData, "G")
  mas <- plotMA(rawdata,do.log=FALSE)

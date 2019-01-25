@@ -5,8 +5,13 @@ import(AnnotationDbi)
 import(GenomicRanges)
 import(IRanges)
 importFrom(reshape2, melt)
-
-#import(ggplot2)
+importFrom(ggplot2, ggplot, aes,
+           geom_boxplot, geom_tile, geom_hline, geom_vline, geom_point, stat_binhex,
+           scale_fill_gradient, scale_fill_discrete, scale_fill_gradient2,
+           xlab, ylab, labs, ggtitle,
+           theme_bw, theme, facet_wrap, 
+           element_blank, element_text,
+           ggsave)
 
 importFrom(BiocGenerics, annotation, "annotation<-",plotMA)
 
@@ -17,6 +22,16 @@ import(illuminaio)
 
 importFrom(stats4, plot, summary)
 importFrom(BiocGenerics, boxplot, combine)
+
+## suggested by R CMD check
+importFrom("grDevices", "col2rgb", "dev.off", "jpeg", "pdf", "png",
+           "rainbow", "rgb")
+importFrom("methods", "as", "callNextMethod", "is", "new")
+importFrom("stats", "aggregate", "approx", "density", "loess",
+           "lowess", "model.matrix", "p.adjust", "predict", "runif")
+importFrom("utils", "data", "menu", "packageDescription", "read.csv",
+           "read.table", "setTxtProgressBar", "txtProgressBar",
+           "write.csv", "write.table")
 
 exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData,limmaResults)
 exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, annotation, "annotation<-","se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine, DesignMatrix, ContrastMatrix, ArrayWeights, LogFC, LogOdds, PValue,"ArrayWeights<-", "LogFC<-", "LogOdds<-", "PValue<-" ,"DesignMatrix<-", "ContrastMatrix<-")

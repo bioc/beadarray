@@ -7,7 +7,9 @@
   spot centres features in the image.
 }
 \usage{
-plotTIFF(tiff, xrange = c(0, ncol(tiff)-1), yrange = c(0, nrow(tiff)-1), high = "cyan", low = "black", mid = NULL, ncolours = 100, log = TRUE, values = FALSE, textCol = "black", ...)
+    plotTIFF(tiff, xrange = c(0, ncol(tiff)-1), yrange = c(0, nrow(tiff)-1), 
+    high = "cyan", low = "black", mid = NULL, ncolours = 100, 
+    log = TRUE, values = FALSE, textCol = "black", ...)
 }
 
 \arguments{

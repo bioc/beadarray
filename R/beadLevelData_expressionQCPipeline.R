@@ -153,7 +153,7 @@ else{
 
 
 
-	  if(require("hwriter")) {
+	  if(requireNamespace("hwriter")) {
 
 	      ##Make the HTML page
 	      outfile = openPage(filename = paste(qcDir, "/",an[i], ".htm", sep=""))
@@ -184,7 +184,7 @@ else{
 
   }
 
-	  if(require("hwriter")) {
+	  if(requireNamespace("hwriter")) {
 	      outfile = openPage(filename = paste(qcDir, "/Summary.htm", sep=""))
 
 

@@ -74,7 +74,7 @@ beadsNearNonDecoded <- function(BLData, array = 1) {
     
     sdfFileName <- file.path(BLData@sectionData$Targets$directory[1], list.files(as.character(BLData@sectionData$Targets$directory[1]), pattern = ".sdf")[1]);
     if(file.exists(sdfFileName)) {
-        sdf <- beadarray:::simpleXMLparse(readLines(sdfFileName, warn = FALSE))
+        sdf <- simpleXMLparse(readLines(sdfFileName, warn = FALSE))
     }
     else {
         stop("sdf file cannot be located.\nAborting registration check\n");
@@ -85,7 +85,7 @@ beadsNearNonDecoded <- function(BLData, array = 1) {
     nCols <- as.integer(sdf$RegistrationParameters$SizeGridY[[1]]);
     
     
-    locs <- beadarray:::obtainLocs(fileName = BLData@sectionData$Targets$greenLocs[array], filePath = BLData@sectionData$Targets$directory[array]);
+    locs <- obtainLocs(fileName = BLData@sectionData$Targets$greenLocs[array], filePath = BLData@sectionData$Targets$directory[array]);
        
 #     ## create a neighbours matrix including all of the non-decoded beads
 #     segmentNeighbours <- .Call("neighboursFromLocs", as.integer(c(nRows, nCols)), PACKAGE = "beadarray")   

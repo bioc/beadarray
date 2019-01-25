@@ -29,7 +29,7 @@ imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, sq
         
         locs <- obtainLocs(fileName = BLData@sectionData$Targets$greenLocs[array], filePath = BLData@sectionData$Targets$directory[array])
 
-        sdf <- beadarray:::simpleXMLparse(readLines(file.path(BLData@sectionData$Targets$directory[1], list.files(as.character(BLData@sectionData$Targets$directory[1]), pattern = ".sdf")[1]), warn = FALSE))
+        sdf <- simpleXMLparse(readLines(file.path(BLData@sectionData$Targets$directory[1], list.files(as.character(BLData@sectionData$Targets$directory[1]), pattern = ".sdf")[1]), warn = FALSE))
         
         nSegs <- as.integer(sdf$RegistrationParameters$SizeBlockY[[1]]);
         nRows <- as.integer(sdf$RegistrationParameters$SizeGridX[[1]]);

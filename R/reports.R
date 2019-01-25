@@ -24,8 +24,8 @@
 #geneList <- genesymbol[genes]
 
 makeReport <- function(geneList, summaryData, limmaRes, tx,genome="hg19"){
-  require(Nozzle.R1)
-  require(ggbio)
+  requireNamespace(Nozzle.R1)
+  requireNamespace(ggbio)
 
   
   lgr <- as(limmaRes, "GRanges")

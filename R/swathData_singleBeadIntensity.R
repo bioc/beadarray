@@ -25,7 +25,7 @@ singleBeadIntensity_6x6 <- function(tiffFile, coordinates) {
     xfrac <- coordinates[1] - floor(coordinates[1]);
     yfrac <- coordinates[2] - floor(coordinates[2]);
     bg <- illuminaBackground(tiffSection, c(9+xfrac, 9+yfrac));
-    fg <- beadarray:::illuminaForeground_6x6(tiffSection, c(9+xfrac, 9+yfrac));
+    fg <- illuminaForeground_6x6(tiffSection, c(9+xfrac, 9+yfrac));
     
     return(fg - bg);
 }

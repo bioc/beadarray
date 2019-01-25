@@ -3,7 +3,7 @@
 
 
 rankInvariantNormalise = function(exprs, T=NULL){
-require("affy")
+requireNamespace("affy")
 if(is.null(T)){
 
 T = apply(exprs, 1, mean, na.rm=TRUE)
@@ -68,7 +68,7 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
           BSData = assayDataElementReplace(BSData, "exprs", as.matrix(log2(exprs(BSData))))
   }
   else if(transform=="vst") {
-          require("lumi")
+          requireNamespace("lumi")
           x = new("LumiBatch")
           x = assayDataElementReplace(x, "exprs", exprs(BSData))
           x = assayDataElementReplace(x, "se.exprs", se.exprs(BSData))
@@ -88,13 +88,13 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
             colnames(exprs(BSData)) = colnms
          },
          qspline={
-            require("affy")
+            requireNamespace("affy")
             BSData = assayDataElementReplace(BSData, "exprs", normalize.qspline(as.matrix(exprs(BSData))))
             rownames(exprs(BSData)) = rownms
             colnames(exprs(BSData)) = colnms
          },
          vsn={
-            require("vsn")
+            requireNamespace("vsn")
             BSData = assayDataElementReplace(BSData, "exprs", exprs(vsn2(exprs(BSData))))
          },
          rankInvariant={
@@ -106,14 +106,14 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
          },
 
 	rsn={
-		require("lumi")
+		requireNamespace("lumi")
 		##Need to check there are no NAs in the data 
 
 		noNA <- apply(exprs(BSData), 1, function(x) !any(is.na(x)))
 
 		newObj <- BSData
 
-		exprs(newObj)[noNA,] = rsn(exprs(BSData)[noNA,],...)
+		exprs(newObj)[noNA,] = lumi::rsn(exprs(BSData)[noNA,],...)
 
 		BSData = newObj
 		

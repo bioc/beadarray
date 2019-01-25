@@ -21,13 +21,15 @@ a list of intensities
 the IDs corresponding to each intensity value
 }
   \item{wts}{
-Weights associated with beads, indicating those recommended for removal by, for example, \code{\link{BASH}}
+Weights associated with beads, indicating those recommended for removal by, 
+for example, \code{\link{BASH}}
 }
   \item{n}{
 number of SDs cutoff used
 }
   \item{predictNlim}{
-how many beads of a bead-type must be present for that bead-type to contribute to prediction of variances?
+how many beads of a bead-type must be present for that bead-type to contribute
+to prediction of variances?
 }
 }
 
@@ -56,7 +58,10 @@ if(require(beadarrayExampleData)){
 
 data(exampleBLData)
 
-oList = squeezedVarOutlierMethod(logGreenChannelTransform(exampleBLData, 1), getBeadData(exampleBLData, array=1, what="ProbeID"))
+oList = squeezedVarOutlierMethod(
+        logGreenChannelTransform(exampleBLData, 1), 
+        getBeadData(exampleBLData, array=1, what="ProbeID")
+    )
  
 }
 

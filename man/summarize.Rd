@@ -9,7 +9,9 @@ Function to summarize the data in a \code{beadLevelData} object into a form more
 
 
 \usage{
-    summarize(BLData, channelList = list(greenChannel), probeIDs=NULL, useSampleFac = FALSE, sampleFac= NULL, weightNames = "wts", removeUnMappedProbes = TRUE)
+    summarize(BLData, channelList = list(greenChannel), 
+    probeIDs=NULL, useSampleFac = FALSE, sampleFac= NULL,
+    weightNames = "wts", removeUnMappedProbes = TRUE)
 }
 
 \arguments{
@@ -82,7 +84,11 @@ if(require(beadarrayExampleData)){
 	myMean = function(x) mean(x,na.rm=TRUE)
 	mySd = function(x) sd(x,na.rm=TRUE)
 
-	greenChannel = new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, myMean, mySd,"G")
+	greenChannel = new("illuminaChannel", 
+	        logGreenChannelTransform, 
+	        illuminaOutlierMethod, 
+	        myMean, mySd, "G"
+	   )
 
 	bsd = summarize(exampleBLData, channelList = list(greenChannel))
 

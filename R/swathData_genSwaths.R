@@ -275,8 +275,10 @@ genThreeSwaths <- function(txt, sectionName, inputDir = ".", locsList, twocolour
     colnames(swath2res) <- c(colnames(swath1), "Overlap")
     colnames(swath3res) <- c(colnames(swath1), "Overlap")
     
-    grid1 <- grid3 <- t(sapply(1:(segmentHeight * s1Width), beadarray:::locsIndicesToGrid, nrow = segmentHeight, ncol = s1Width))
-    grid2 <- t(sapply(1:(segmentHeight * s2Width), beadarray:::locsIndicesToGrid, nrow = segmentHeight, ncol = s2Width))
+    grid1 <- grid3 <- t(sapply(1:(segmentHeight * s1Width), 
+                               locsIndicesToGrid, nrow = segmentHeight, ncol = s1Width))
+    grid2 <- t(sapply(1:(segmentHeight * s2Width), 
+                      locsIndicesToGrid, nrow = segmentHeight, ncol = s2Width))
     
     tiffG2 <- readTIFF(file.path(inputDir, paste(sectionName, GrnTiffSuffix2, sep = "")))
     tiffG3 <- readTIFF(file.path(inputDir, paste(sectionName, GrnTiffSuffix3, sep = "")))
