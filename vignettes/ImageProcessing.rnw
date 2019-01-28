@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{Analysis of bead-summary data}
+%\VignetteIndexEntry{Image Analysis with beadarray}
 %\VignettePackage{beadarray}
 %\VignetteEngine{knitr::knitr}
 
