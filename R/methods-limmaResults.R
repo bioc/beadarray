@@ -52,7 +52,7 @@ setAs("limmaResults", "GRanges",
           
           locMat <- do.call("rbind", locMat)
           
-          grL <- new("GRangesList")
+          grL <- GRangesList()
           for(i in 1:ncol(from)){
           rng <- GRanges(locMat[,1], IRanges(as.numeric(locMat[,2]), as.numeric(locMat[,3]),names=rn),strand=locMat[,4])
           #mcols(rng) <- df[match(names(rng), rownames(df)),]
