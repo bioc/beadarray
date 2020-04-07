@@ -1,4 +1,10 @@
-expressionQCPipeline = function(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "biotin", Hybridisation = "cy3_hyb"),zlim=c(5,7),positiveControlTags = c("housekeeping", "biotin"), hybridisationTags =  c("cy3_hyb"), negativeTag= "negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform){
+expressionQCPipeline = function(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", 
+                                horizontal = TRUE,controlProfile=NULL,overWrite=FALSE, nSegments=9,
+                                outlierFun=illuminaOutlierMethod,
+                                tagsToDetect = list(housekeeping = "housekeeping", Biotin = "biotin", Hybridisation = "cy3_hyb"),
+                                zlim=c(5,7), positiveControlTags = c("housekeeping", "biotin"), 
+                                hybridisationTags =  c("cy3_hyb"), negativeTag= "negative", 
+                                boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform){
 
 
 an = sectionNames(BLData)

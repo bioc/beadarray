@@ -63,9 +63,7 @@ additional control types to be plotted
   \item{negativeTag}{
 character string to identify which control type in the control profile corresponds to negative controls
 }
-  \item{\dots}{
-other plot arguments
-}
+
 }
 \details{
 

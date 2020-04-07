@@ -1,3 +1,5 @@
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("Control", "ControlType", "ID", "Log2Intensity", "Masked"))
+
 combinedControlPlot <- function(data, array = 1, controlProfile=NULL, wtsName = NULL, negativeLabel = "negative", excludeString = "ERCC"){
 
 #require("ggplot2")
@@ -95,7 +97,13 @@ else{
 
 
 
-  df <- data.frame(ControlType = bsv, ID = pIDs, Log2Intensity = log2(inten), Masked = sapply(wts, function(x) x == 0), Negative = sapply(bsv, function(x) x == negativeLabel), Regular = sapply(bsv, function(x) x == "regular"), Control = sapply(bsv, function(x) !(x %in% c("regular", negativeLabel))))
+  df <- data.frame(ControlType = bsv, 
+                   ID = pIDs, 
+                   Log2Intensity = log2(inten), 
+                   Masked = sapply(wts, function(x) x == 0), 
+                   Negative = sapply(bsv, function(x) x == negativeLabel), 
+                   Regular = sapply(bsv, function(x) x == "regular"), 
+                   Control = sapply(bsv, function(x) !(x %in% c("regular", negativeLabel))))
 
   df.controls <- subset(df,Control)
 
