@@ -1,0 +1,577 @@
+---
+title: "Analysis of bead-summary data"
+author: "Mark Dunning"
+date: "`r Sys.Date()`"
+output: 
+  BiocStyle::html_document:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Analysis of bead-summary data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+`beadarray` is a package for the pre-processing and analysis of Illumina BeadArray. The main advantage is being able to read raw data created by Illumina's scanning software. Data created in this manner are in the same format regardless of the assay (i.e expression, genotyping, methylation) being performed. Thus, beadarray is able to handle all these types of data. Many functions within beadarray have been written to cope with this flexibility. 
+
+The BeadArray technology involves randomly arranged arrays of beads, with beads having the same probe sequence attached colloquially known as a bead-type. BeadArrays are combined in parallel on either a rectangular chip (BeadChip) or a matrix of 8 by 12 hexagonal arrays (Sentrix Array Matrix or SAM). The BeadChip is further divided into strips on the surface known as sections, with each section giving rise to a different image when scanned by BeadScan. These images, and associated text files, comprise the raw data for a beadarray analysis. However, for BeadChips, the number of sections assigned to each biological sample may vary from 1 on HumanHT12 chips, 2 on HumanWG6 chips or sometimes ten or more for SNP chips with large numbers of SNPs being investigated. 
+
+This vignette demonstrates the analysis of bead summary data using beadarray. The recommended approach to obtain these data is to start with bead-level data and follow the steps illustrated in the vignette `beadlevel.pdf` distributed with `beadarray`. If bead-level data are not available, the output of Illumina's BeadStudio or GenomeStudio can be read by `beadarray`. Example code to do this is provided at the end of this vignette. However, the same object types are produced from either of these routes and the same functionality is available.
+
+To make the most use of the code in this vignette, you will need to install the `beadarrayExampleData` and `illuminaHumanv3.db` packages from `Bioconductor`. We use the `BiocManager` package to install these:
+
+```{r eval=FALSE}
+install.packages("BiocManager")
+BiocManager::install(c("beadarrayExampleData", "illuminaHumanv3.db"))
+```
+
+
+
+The code used to produce these example data is given in the vignette of `beadarrayExampleData`, which follow similar steps to those described in the `beadlevel.pdf` vignette of `beadarray`. The following commands give a basic description of the data.
+
+```{r}
+library("beadarray")
+
+require(beadarrayExampleData)
+
+data(exampleSummaryData)
+
+exampleSummaryData
+
+```
+
+
+
+
+Summarized data are stored in an object of type `ExpressionSetIllumina` which
+is an extension of the `ExpressionSet` class developed by the Bioconductor team as a container for data from high-throughput assays. Objects of this type use a series of slots to store the data.  For consistency with the definition of other `ExpressionSet` objects, we refer to the expression values as the `exprs` matrix (this stores the probe-specific average intensities) which can be accessed using `exprs` and subset in the usual manner. The `se.exprs` matrix, which stores the probe-specific variability can be accessed using `se.exprs`. You may notice that the expression values have already been transformed to the log$_2$ scale, which is an option in the `summarize` function in `beadarray`. Data exported from BeadStudio or GenomeStudio will usually be un-transformed and on the scale $0$ to $2^{16}$.
+
+
+```{r}
+exprs(exampleSummaryData)[1:5,1:5]
+se.exprs(exampleSummaryData)[1:5,1:5]
+
+```
+
+
+
+## feature and pheno data# 
+
+The `fData` and `pData` functions are useful shortcuts to find more information about the features (rows) and samples (columns) in the summary object. These annotations are created automatically whenever a bead-level data is summarized (see `beadlevel.pdf`) or read from a BeadStudio file. The `fData` will be added to later, but initially contains information on whether each probe is a control or not. In this example the `phenoData` denotes the sample group for each array; either Brain or UHRR (Universal Human Reference RNA).
+
+
+```{r}
+head(fData(exampleSummaryData))
+table(fData(exampleSummaryData)[,"Status"])
+
+pData(exampleSummaryData)
+```
+
+## Subsetting the data
+
+There are various way to subset an `expressionSetIllumina` object, each of which returns an `ExpressionSetIllumina` with the same slots, but different dimensions. When bead-level data are summarized by `beadarray` there is an option to apply different transformation options, and save the results as different channels in the resultant object. For instance, if summarizing two-colour data one might be interested in summarizing the red and green channels, or some combination of the two, separately. Both log$_2$ and un-logged data are stored in the `exampleSummaryData` object and can be accessed by using the `channel` function. Both the rows and columns in the resultant `ExpressionSetIllumina` object are kept in the same order.
+
+```{r}
+channelNames(exampleSummaryData)
+
+exampleSummaryData.log2 <- channel(exampleSummaryData, "G")
+exampleSummaryData.unlogged <- channel(exampleSummaryData, "G.ul")
+
+
+sampleNames(exampleSummaryData.log2)
+sampleNames(exampleSummaryData.unlogged)
+
+exprs(exampleSummaryData.log2)[1:10,1:3]
+exprs(exampleSummaryData.unlogged)[1:10,1:3]
+```
+
+
+
+
+As we have seen, the expression matrix of the `ExpressionSetIllumina` object can be subset by column or row, In fact, the same subset operations can be performed on the `ExpressionSetIllumina` object itself. In the following code, notice how the number of samples and features changes in the output.
+
+```{r}
+exampleSummaryData.log2[,1:4]
+exampleSummaryData.log2[1:10,]
+
+```
+
+
+The object can also be subset by a vector of characters which must correspond to the names of features (i.e. row names). Currently, no analogous functions is available to subset by sample.
+
+
+```{r}
+randIDs <- sample(featureNames(exampleSummaryData), 1000)
+
+exampleSummaryData[randIDs,]
+```
+
+## Exploratory analysis using boxplots
+
+
+Boxplots of intensity levels and the number of beads are useful for quality assessment purposes. `beadarray` includes a modified version of the `boxplot` function that can take any valid `ExpressionSetIllumina` object and plot the expression matrix by default. For these examples we plot just a subset of the original `exampleSummaryData` object using random row IDs.
+
+```{r}
+boxplot(exampleSummaryData.log2[randIDs,])
+```
+
+
+The function can also plot other `assayData` items, such as the number of observations.
+
+```{r}
+boxplot(exampleSummaryData.log2[randIDs,], what="nObservations")
+```
+
+
+
+
+The default boxplot plots a separate box for each array, but often it is beneficial for compare expression levels between different sample groups. If this information is stored in the `phenoData` slot it can be incorporated into the plot. The following compares the overall expression level between UHRR and Brain samples. 
+
+```{r}
+boxplot(exampleSummaryData.log2[randIDs,], SampleGroup="SampleFac")
+```
+
+
+
+
+In a similar manner, we may wish to visualize the differences between sample groups for particular probe groups. As a simple example, we look at the difference between negative controls and regular probes for each array. You should notice that the negative controls as consistently lower (as expected) with the exception of array `4616443081_B`.
+
+
+```{r}
+boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status")
+```
+
+Extra feature annotation is available from annotation packages in Bioconductor, and `beadarray` includes functionality to extract these data from the annotation packages. The `annotation` of the object must be set in order that the correct annotation package can be loaded. For example, the `exampleSummaryData` object was generated from `Humanv3` data so the `illuminaHumanv3.db` package must be present. The `addFeatureData` function annotates all features of an `ExpressionSetIllumina` object using particular mappings from the `illuminaHumanv3.db` package. To see which mappings are available you can use
+the `illuminaHumanv3()` function, or equivalent from other packages.
+
+
+```{r}
+annotation(exampleSummaryData)
+
+exampleSummaryData.log2 <- addFeatureData(exampleSummaryData.log2, 
+toAdd = c("SYMBOL", "PROBEQUALITY", "CODINGZONE", "PROBESEQUENCE", "GENOMICLOCATION"))
+
+head(fData(exampleSummaryData.log2))
+
+illuminaHumanv3()
+```
+
+
+If we suspect that a particular gene may be differentially expressed between conditions, we can subset the `ExpressionSetIllumina` object to just include probes that target the gene, and plot the response of these probes against the sample groups. Furthermore, the different probes can be distinguished using the `probeFactor` parameter.
+
+
+```{r}
+ids <- which(fData(exampleSummaryData.log2)[,"SYMBOL"] == "ALB")
+
+boxplot(exampleSummaryData.log2[ids,], 
+  SampleGroup = "SampleFac", probeFactor = "IlluminaID")
+```
+
+## A note about ggplot2
+The `boxplot` function in `beadarray` creates graphics using the `ggplot2` package rather than the R base graphics system. Therefore, the standard way of manipulating graphics using `par` and `mfrow` etc will not work with the output of `boxplot`. However, the `ggplot2` package has equivalent functionality and is a more powerful and flexible system. There are numerous tutorials on how to use the `ggplot2` package, which is beyond the scope of this vignette. In the below code, we assign the results of `boxplot` to objects that we combine using the `gridExtra` package. The code also demonstrates how aspects of the plot can be altered programatically. 
+
+```{r fig.width=12}
+library(ggplot2)
+library(gridExtra)
+bp1 <- boxplot(exampleSummaryData.log2[ids,], 
+SampleGroup = "SampleFac", probeFactor = "IlluminaID") 
+bp1 <- bp1+ labs(title = "ALB expression level comparison") + xlab("Illumina Probe") + ylab("Log2 Intensity")
+
+bp2 <- boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status") 
+bp2 <- bp2 + labs(title = "Control Probe Comparison")
+
+grid.arrange(bp1,bp2)
+```
+
+
+
+We can also extract the data that was used to construct the plot.
+
+```{r}
+bp1$data
+```
+
+
+
+## Other exploratory analysis
+
+Replicate samples can also be compared using the \Rfunction{plotMA} function. 
+
+```{r}
+mas <- plotMA(exampleSummaryData.log2,do.log=FALSE)
+
+mas
+```
+
+
+
+
+In each panel we see the MA plots for all arrays in the experiment compared to a 'reference' array composed of the average intensities of all probes. On
+an MA plot, for each probe we plot the average of the log2 -intensities from the two arrays on the x-axis
+and the difference in intensities (log -ratios) on the y-axis. We would expect most probes to be and hence most points on the plot should lie along the line y=0.
+
+As with `boxplot`, the object returned is a `ggplot2` object that can be modified by the end-user.
+
+
+```{r}
+##Added lines on the y axis
+mas + geom_hline(yintercept=c(-1.5,1.5),col="red",lty=2)
+##Added a smoothed line to each plot
+mas+ geom_smooth(col="red")
+##Changing the color scale
+mas + scale_fill_gradient2(low="yellow",mid="orange",high="red")
+```
+
+
+
+
+
+We can also specify a sample grouping, which will make all pairwise comparisons
+
+```{r}
+mas <- plotMA(exampleSummaryData.log2,do.log=FALSE,SampleGroup="SampleFac")
+mas[[1]]
+
+```
+
+
+
+# Normalisation
+
+To correct for differences in expression level across a chip and between chips we need to normalise
+the signal to make the arrays comparable. The normalisation methods available in the `affy` package, or
+variance-stabilising transformation from the `lumi` package may be applied using the `normaliseIllumina`
+function. Below we quantile normalise the log$_2$ transformed data.
+
+
+```{r}
+exampleSummaryData.norm <- normaliseIllumina(exampleSummaryData.log2, 
+method="quantile", transform="none")
+```
+
+
+
+An alternative approach is to combine normal-exponential background correction with quantile normalisation as suggested in the `limma` package. However, this requires data that have not been log-transformed. Note that the control probes are removed from the output object
+
+
+```{r}
+exampleSummaryData.norm2 <- normaliseIllumina(channel(exampleSummaryData, "G.ul"), 
+  method="neqc", transform="none")
+```
+
+
+
+# Filtering
+
+
+Filtering non-responding probes from further analysis can improve the power to detect differential expression. One way of achieving this is to remove probes whose probe sequence has undesirable properties. Four basic annotation quality categories (`Perfect', `Good', `Bad' and `No match') are defined and have been shown to correlate with expression level and measures of differential expression.
+We recommend removing probes assigned a `Bad' or `No match' quality score after normalization.
+This approach is similar to the common practice of removing lowly-expressed probes, but with the additional benefit of discarding probes with a high expression level caused by non-specific hybridization. 
+
+
+```{r}
+library(illuminaHumanv3.db)
+
+ids <- as.character(featureNames(exampleSummaryData.norm))
+
+qual <- unlist(mget(ids, illuminaHumanv3PROBEQUALITY, ifnotfound=NA))
+
+table(qual)
+
+rem <- qual == "No match" | qual == "Bad" | is.na(qual)
+
+exampleSummaryData.filt <- exampleSummaryData.norm[!rem,]
+
+dim(exampleSummaryData.filt)
+```
+
+
+# Differential expression
+
+The differential expression methods available in the limma package can be used to identify differentially
+expressed genes. The functions `lmFit` and `eBayes` can be applied to the normalised data.
+In the example below, we set up a design matrix for the example experiment and fit a linear model
+to summaries the data from the UHRR and Brain replicates to give one value per condition. We then
+define contrasts comparing the Brain sample to the UHRR and calculate moderated t-statistics with
+empirical Bayes shrinkage of the sample variances. In this particular experiment, the Brain and UHRR
+samples are very different and we would expect to see many differentially expressed genes.\\
+
+Empirical array quality weights can be used to measure the relative reliability of each array.  A variance is estimated for each array by the `{arrayWeights` function which measures how well the expression values from each array follow the linear model.
+These variances are converted to relative weights which can then be used in the linear model to
+down-weight observations from less reliable arrays which improves power to detect differential
+expression. You should notice that some arrays have very low weight consistent with their poor QC.
+
+We then define a contrast comparing UHRR to Brain Reference and calculate moderated $t$-statistics with empirical Bayes' shrinkage of the sample variances.
+
+```{r eval=FALSE}
+rna <- factor(pData(exampleSummaryData)[,"SampleFac"])
+
+design <- model.matrix(~0+rna)
+colnames(design) <- levels(rna)
+aw <- arrayWeights(exprs(exampleSummaryData.filt), design)
+aw
+fit <- lmFit(exprs(exampleSummaryData.filt), design, weights=aw)
+contrasts <- makeContrasts(UHRR-Brain, levels=design)
+contr.fit <- eBayes(contrasts.fit(fit, contrasts))
+topTable(contr.fit, coef=1)
+```
+
+##  Automating the DE analysis
+A convenience function has been created to automate the differential expression analysis and repeat the above steps. The requirements to the function are a normalised object and a SampleGroup. By default, a design matrix and contrast matrix are derived from the SampleGroup by considering all pairwise contrasts. The matrices used, along with the array weights are saved in the output and can be retrieved later.
+
+```{r}
+limmaRes <- limmaDE(exampleSummaryData.filt, SampleGroup="SampleFac")
+limmaRes
+
+DesignMatrix(limmaRes)
+ContrastMatrix(limmaRes)
+ArrayWeights(limmaRes)
+plot(limmaRes)
+```
+
+# Output as GRanges
+
+To assist with meta-analysis, and integration with other genomic data-types, it is possible to export the normalised values as a `GRanges` object. Therefore it is easy to perform overlaps, counts etc with other data using the `GenomicRanges` and `GenomicFeatures` packages. In order for the ranges to be constructed, the genomic locations of each probe have to be obtained from the appropriate annotation package `illuminaHumanv3.db` in this example). Provided that this package has been installed, the mapping should occur automatically. The expression values are stored in the `GRanges object along with the `featureData`.
+
+```{r}
+gr <- as(exampleSummaryData.filt[,1:5], "GRanges")
+gr
+```
+
+
+
+The limma analysis results can also be exported as a GRanges object for downstream analysis. The elementMetadata of the output object is set to the statistics from the limma analysis.
+
+```{r}
+lgr <- as(limmaRes, "GRanges")
+lgr
+```
+
+
+The data can be manipulated according to the DE stats
+
+```{r}
+lgr <- lgr[[1]]
+lgr[order(lgr$LogOdds,decreasing=T)]
+
+lgr[p.adjust(lgr$PValue)<0.05]
+
+```
+
+
+We can do overlaps with other \Rclass{GRanges} objects
+
+```{r}
+library(GenomicRanges)
+  HBE1 <- GRanges("chr11", IRanges(5289580,5291373),strand="-")
+
+  lgr[lgr %over% HBE1]
+```
+
+## Visualisation options
+
+Having converted the DE results into a common format such as `GRanges` allows access to common routines, such as those provided by `ggbio`. For example, it is often useful to know where exactly the illumina probes are located with respect to the gene.
+
+```{r eval=FALSE}
+library(ggbio)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+tx <- TxDb.Hsapiens.UCSC.hg19.knownGene
+p1 <- autoplot(tx, which=HBE1)
+p2 <-   autoplot(lgr[lgr %over% HBE1])
+tracks(p1,p2)
+id <- plotIdeogram(genome="hg19", subchr="chr11")
+tracks(id,p1,p2)
+```
+
+
+Genome-wide plots are also available
+
+```{r eval=FALSE}
+plotGrandLinear(lgr, aes(y = LogFC))
+```
+
+
+# Creating a GEO submission file
+
+Most journals are now requiring that data are deposited in a public repository prior to publication of a manuscript. Formatting the microarray and associated metadata can be time-consuming, so we have provided a function to create a template for a GEO submission. GEO require particular meta data to be recorded regarding the experimental protocols. The output of the `makeGEOSubmissionFiles` includes a spreadsheet with the relevant fields that can be filled in manually. The normalised and raw data are written to tab-delimited files. By default, the annotation package associated with the data is consulted to determine which probes are exported. Any probes that are present in the data, but not in the annotation package are excluded from the submission file.
+
+```{r eval=FALSE}
+rawdata <- channel(exampleSummaryData, "G")
+normdata <- normaliseIllumina(rawdata)
+
+makeGEOSubmissionFiles(normdata,rawdata)
+ 
+```
+
+
+
+Alternatively, GEO's official probe annotation files can be used to decide which probes to include in the submission. You will first have to download the appropriate file from the GEO website.
+
+```{r eval=FALSE} 
+download.file(
+"ftp://ftp.ncbi.nlm.nih.gov/geo/platforms/GPL6nnn/GPL6947/annot/GPL6947.annot.gz",
+destfile="GPL6947.annot.gz"
+)
+
+makeGEOSubmissionFiles(normdata,rawdata,softTemplate="GPL6947.annot.gz")
+        
+```
+
+
+# Analysing data from GEO
+
+beadarray now contains functionality that can assist in the analysis of data available in the GEO (Gene Expression Omnibus) repository. We can download such data using `GEOquery`:
+
+
+```{r}
+library(GEOquery)
+
+url <- "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE33nnn/GSE33126/matrix/"
+filenm <- "GSE33126_series_matrix.txt.gz"
+if(!file.exists("GSE33126_series_matrix.txt.gz")) download.file(paste(url, filenm, sep=""), destfile=filenm)
+gse <- getGEO(filename=filenm)
+head(exprs(gse))
+```
+
+
+
+Now we convert this to an `ExpressionSetIllumina`; `beadarray`'s native class for dealing with summarised data. The `annotation` slot stored in the `ExpressionSet` is converted from a GEO identifier (e.g. GPL10558) to one recognised by `beadarray` (e.g. `Humanv4`). If no conversion is possible, the resulting object will have `NULL` for the annotation slot. If successful, you should notice that the object is automatically annotated against the latest available annotation package.
+
+```{r}
+summaryData <- as(gse, "ExpressionSetIllumina")
+summaryData
+head(fData(summaryData))
+```
+
+
+
+
+As we have annotated using the latest packages, we have imported the probe quality scores. We can calculate Detection scores by using the 'No match' probes as a reference; useful as data in repositories rarely export these data
+
+```{r}
+fData(summaryData)$Status <- 
+  ifelse(fData(summaryData)$PROBEQUALITY=="No match","negative","regular" )
+
+Detection(summaryData) <- calculateDetection(summaryData, 
+                              status=fData(summaryData)$Status)
+```
+
+
+
+The 'neqc' normalisation method from limma can also be used now. 
+
+```{r}
+summaryData.norm <- normaliseIllumina(summaryData,method="neqc", 
+    status=fData(summaryData)$Status)
+boxplot(summaryData.norm)
+```
+
+
+We can do differential expression if we know the column in the \Robject{phenoData} that contains sample group information
+
+```{r}
+limmaResults <- limmaDE(summaryData.norm, "source_name_ch1")
+limmaResults
+```
+
+
+# Reading bead summary data into beadarray
+BeadStudio/GenomeStudio is Illumina's proprietary software for analyzing data output by
+the scanning system (BeadScan/iScan).  It contains different modules for analyzing data from different platforms.  For further information on the software and how to export summarized data, refer to the user's manual.  In this section we consider how to read in and analyze output from the gene expression module of BeadStudio/GenomeStudio.
+
+
+The example dataset used in this section consists of an experiment with one Human
+WG-6 version 2 BeadChip.  These arrays were hybridized with the control RNA samples used in the MAQC project (3 replicates of UHRR and 3 replicates of Brain Reference RNA).
+
+
+The non-normalized data for regular and control probes was output by BeadStudio/GenomeStudio.
+
+
+The example BeadStudio output used in this section is available as a zip file that can be downloaded from [https://www.huber.embl.de/users/msmith/beadarray/AsuragenMAQC_BeadStudioOutput.zip] (https://www.huber.embl.de/users/msmith/beadarray/AsuragenMAQC_BeadStudioOutput.zip).
+
+You will need to download and unzip the contents of this file to the current  `R` working directory.
+Inside this zip file you will find several files including summarized, non-normalized data
+and a file containing control information.  
+We give a more detailed description of each of the particular files we will make use of below.
+
+- Sample probe profile (AsuragenMAQC-probe-raw.txt) -
+text file which contains the non-normalized summary values as output by BeadStudio.
+Inside the file is a data matrix with some 48,000 rows.
+In newer versions of the software, these data are preceded by several lines of header information.
+Each row is a different probe in the experiment and the columns
+give different measurements for the gene. For each array, we record the summarized
+expression level (AVG_Signal), standard error of the bead replicates (BEAD_STDERR),
+number of beads (Avg_NBEADS) and a detection $p$-value (Detection Pval) which
+estimates the probability of a gene being detected above the background level.
+When exporting this file from BeadStudio, the user is able to choose which
+columns to export.
+- Control probe profile (AsuragenMAQC-controls.txt) (recommended) -
+text file which contains the summarized data for each of the controls on each array,
+which may be useful for diagnostic and calibration purposes.  Refer to the Illumina
+documentation for information on what each control measures.
+- targets file (optional) - text file created by the user specifying
+which sample is hybridized to each array.
+No such file is provided for this dataset, however we can extract sample
+annotation information from the column headings in the sample probe profile.
+
+
+Files with normalized intensities (those with `avg` in the name), as well as files with one
+intensity value per gene (files with `gene` in the name) instead of separate intensities
+for different probes targeting the same transcript, are also available in this download.  
+We recommend users work with the non-normalized probe-specific data in their analysis where possible.  Illumina's background correction step, which subtracts the intensities of the negative control probes from the intensities of the regular probes, should also be avoided.
+
+```{r evAl=FALSE}
+library(beadarray)
+dataFile = "AsuragenMAQC-probe-raw.txt"
+qcFile = "AsuragenMAQC-controls.txt"
+BSData = readBeadSummaryData(dataFile = dataFile,
+qcFile = qcFile, controlID = "ProbeID",
+skip = 0, qc.skip = 0, qc.columns = list(exprs = "AVG_Signal",
+Detection = "Detection Pval"))
+
+```
+
+
+
+
+The arguments of readBeadSummaryData can be modified to suit data from versions 1, 2 or 3
+of BeadStudio. The current default settings should work for version 3 output. Users may need to
+change the argument sep, which specifies if the dataFile is comma or tab delimited and the skip
+argument which specifies the number of lines of header information at the top of the file. Possible
+skip arguments of 0, 7 and 8 have been observed, depending on the version of BeadStudio or way in
+which the data was exported. The columns argument is used to specify which column headings to
+read from dataFile and store in various matrices. Note that the naming of the columns containing
+the standard errors changed between versions of BeadStudio (earlier versions used BEAD STDEV in
+place of BEAD STDERR - be sure to check that the columns argument is appropriate for your data).
+Equivalent arguments (qc.sep, qc.skip and qc.columns) are used to read the data from qcFile. See
+the help page (?readBeadSummaryData) for a complete description of each argument to the function.
+
+# Reading IDAT files
+
+We can also read BeadArray data in the format produced directly by the scanner, the IDAT file.  The example below uses the `GEOquery` to obtain the four IDAT files stored as supplementary information for GEO series GSE27073.  In this case the stored files have been compressed using gzip and need to be decompressed before `beadarray` can read them.  If you are using IDAT files as they come of the scanner this step will not be necessary.
+
+```{r eval=FALSE}
+library(beadarray)
+library(GEOquery)
+downloadDir <- tempdir()
+getGEOSuppFiles("GSE27073", makeDirectory = FALSE, baseDir = downloadDir)
+idatFiles <- list.files(path = downloadDir, pattern = ".idat.gz", full.names=TRUE)
+sapply(idatFiles, gunzip)
+idatFiles <- list.files(path = downloadDir, pattern = ".idat", full.names=TRUE)
+BSData <- readIdatFiles(idatFiles)
+```
+
+
+The output from `readIdatFiles()` is an object of class `ExpressionSetIllumina`, as described earlier.
+
+
+# Citing beadarray
+
+If you use `beadarray` for the analysis or pre-processing of BeadArray data please cite:
+
+Dunning MJ, Smith ML, Ritchie ME, Tavare S, beadarray: R classes and
+  methods for Illumina bead-based data, Bioinformatics, 23(16):2183-2184
+
+# Asking for help on beadarray
+
+Wherever possible, questions about `beadarray` should be sent to the Bioconductor support forum. This way, all problems and solutions will be kept in a searchable archive. When posting to this mailing list, please first consult the posting guide. In particular, state the version of `beadarray` and `R` that you are using and try to provide a reproducible example of your problem. This will help us to diagnose the problem. 
