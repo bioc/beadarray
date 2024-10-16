@@ -1,7 +1,7 @@
 Package: beadarray
 Title: Quality assessment and low-level analysis for Illumina BeadArray data
-Version: 2.55.1
-Date: 2024-06-17
+Version: 2.55.2
+Date: 2024-10-16
 Author: Mark Dunning, Mike Smith, Jonathan Cairns, Andy Lynch, Matt Ritchie
 Maintainer: Mark Dunning <m.j.dunning@sheffield.ac.uk>
 Description: The package is able to read bead-level data (raw TIFFs and text 

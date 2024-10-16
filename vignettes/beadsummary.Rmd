@@ -520,7 +520,7 @@ intensity value per gene (files with `gene` in the name) instead of separate int
 for different probes targeting the same transcript, are also available in this download.  
 We recommend users work with the non-normalized probe-specific data in their analysis where possible.  Illumina's background correction step, which subtracts the intensities of the negative control probes from the intensities of the regular probes, should also be avoided.
 
-```{r evAl=FALSE}
+```{r eval=FALSE}
 library(beadarray)
 dataFile = "AsuragenMAQC-probe-raw.txt"
 qcFile = "AsuragenMAQC-controls.txt"
