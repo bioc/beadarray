@@ -30,7 +30,7 @@ The documentation for this package is split into separate user guides: one for b
 a second for bead-summary data.
 These documents may be accessed using the following commands:
 
-```{r}
+```{r eval=FALSE}
 library("beadarray")
 beadarrayUsersGuide(topic="beadlevel")
 beadarrayUsersGuide(topic="beadsummary")
