@@ -1,7 +1,7 @@
 Package: beadarray
 Title: Quality assessment and low-level analysis for Illumina BeadArray data
-Version: 2.60.0
-Date: 2024-10-17
+Version: 2.60.1
+Date: 2026-03-18
 Author: Mark Dunning, Mike Smith, Jonathan Cairns, Andy Lynch, Matt Ritchie
 Maintainer: Mark Dunning <m.j.dunning@sheffield.ac.uk>
 Description: The package is able to read bead-level data (raw TIFFs and text 
@@ -13,7 +13,7 @@ Imports: BeadDataPackR, limma, AnnotationDbi,
     illuminaio, methods, ggplot2
 Suggests: lumi, vsn, affy, hwriter, beadarrayExampleData,
     illuminaHumanv3.db, gridExtra, BiocStyle, 
-    TxDb.Hsapiens.UCSC.hg19.knownGene, ggbio, Nozzle.R1, knitr
+    TxDb.Hsapiens.UCSC.hg19.knownGene, ggbio, knitr
 License: MIT + file LICENSE
 biocViews: Microarray, OneChannel, QualityControl, Preprocessing
 LazyData: yes 
