@@ -17,8 +17,8 @@ importFrom(BiocGenerics, annotation, "annotation<-",plotMA)
 
 importFrom(limma, normalizeQuantiles, neqc, lmFit, arrayWeights,makeContrasts,contrasts.fit, eBayes)
 
-import(BeadDataPackR)
-import(illuminaio)
+#import(BeadDataPackR)
+#import(illuminaio)
 
 importFrom(stats4, plot, summary)
 importFrom(BiocGenerics, boxplot, combine)
