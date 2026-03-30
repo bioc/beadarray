@@ -1,6 +1,6 @@
 Package: beadarray
 Title: Quality assessment and low-level analysis for Illumina BeadArray data
-Version: 2.61.2
+Version: 2.61.3
 Date: 2026-03-18
 Author: Mark Dunning, Mike Smith, Jonathan Cairns, Andy Lynch, Matt Ritchie
 Maintainer: Mark Dunning <m.dunning@imperial.ac.uk>
@@ -17,4 +17,3 @@ License: MIT + file LICENSE
 biocViews: Microarray, OneChannel, QualityControl, Preprocessing
 LazyData: yes 
 VignetteBuilder: knitr
-PackageStatus: Deprecated
