@@ -429,7 +429,7 @@ library(GEOquery)
 url <- "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE33nnn/GSE33126/matrix/"
 filenm <- "GSE33126_series_matrix.txt.gz"
 if(!file.exists("GSE33126_series_matrix.txt.gz")) download.file(paste(url, filenm, sep=""), destfile=filenm)
-gse <- getGEO(filename=filenm)
+gse <- getGEO(filename=filenm, returnType = "ExpressionSet")
 head(exprs(gse))
 ```
 
