@@ -426,11 +426,23 @@ beadarray now contains functionality that can assist in the analysis of data ava
 ```{r}
 library(GEOquery)
 
-url <- "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE33nnn/GSE33126/matrix/"
-filenm <- "GSE33126_series_matrix.txt.gz"
-if(!file.exists("GSE33126_series_matrix.txt.gz")) download.file(paste(url, filenm, sep=""), destfile=filenm)
-gse <- getGEO(filename=filenm, returnType = "ExpressionSet")
+# Define path to your fallback file inside the package in case of GEO download problem
+fallback_file <- system.file("inst/extdata", "gse_fallback.rds", package = "beadarray")
+gse <- tryCatch({
+    # Attempt the live download
+    GEOquery::getGEO("GSE33126", returnType = "ExpressionSet")
+}, error = function(e) {
+    message("Notice: GEO download failed or timed out. Using local fallback data.")
+    
+    if (file.exists(fallback_file)) {
+        readRDS(fallback_file)
+    } else {
+        stop("Fallback data file not found: ", e$message)
+    }
+})
+
 head(exprs(gse))
+
 ```
 
 
