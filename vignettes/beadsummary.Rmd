@@ -430,7 +430,7 @@ library(GEOquery)
 fallback_file <- system.file("inst/extdata", "gse_fallback.rds", package = "beadarray")
 gse <- tryCatch({
     # Attempt the live download
-    GEOquery::getGEO("GSE33126", returnType = "ExpressionSet")
+    GEOquery::getGEO("GSE33126", returnType = "ExpressionSet")[[1]]
 }, error = function(e) {
     message("Notice: GEO download failed or timed out. Using local fallback data.")
     
